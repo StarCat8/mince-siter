@@ -20,8 +20,8 @@ const MINCE = {
   papers: [
     {
       roman: "I",
-      title: "Neutron capture elements in Milky Way halo stars at intermediate metallicity — First sample",
-      authors: "Bonifacio P., Cescutti G., Caffau E. et al.",
+      title: "MINCE. I. Presentation of the project and of the first year sample",
+      authors: "Cescutti G., et al.",
       journal: "A&A",
       year: 2022,
       adsUrl: "https://scixplorer.org/abs/2022A%26A...668A.168C/abstract",   // ← paste ADS link here
@@ -29,8 +29,8 @@ const MINCE = {
     },
     {
       roman: "II",
-      title: "MINCE II — title",
-      authors: "Cescutti G., Bonifacio P., Caffau E. et al.",
+      title: "MINCE. II. Neutron capture elements",
+      authors: "François, P., et al.",
       journal: "A&A",
       year: 2024,
       adsUrl: "https://scixplorer.org/abs/2024A%26A...686A.295F/abstract",
@@ -38,7 +38,7 @@ const MINCE = {
     },
     {
       roman: "III",
-      title: "MINCE III — title",
+      title: "MINCE: III. Detailed chemical analysis of the UVES sample",
       authors: "F. Lucertini — et al.",
       journal: "A&A",
       year: 2025,
@@ -47,7 +47,7 @@ const MINCE = {
     },
     {
       roman: "IV",
-      title: "MINCE IV — title",
+      title: "MINCE: IV. A detailed analysis of 37 metal-poor and subsolar metallicity stars",
       authors: "L. Sgatti — et al.",
       journal: "A&A",
       year: 2026,
@@ -65,7 +65,7 @@ const MINCE = {
     },
     {
       roman: "VI",
-      title: "MINCE VI — title",
+      title: "MINCE VI",
       authors: "A. Schichtel — et al.",
       journal: "A&A",
       year: null,
