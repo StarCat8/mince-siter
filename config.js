@@ -24,7 +24,7 @@ const MINCE = {
       authors: "Bonifacio P., Cescutti G., Caffau E. et al.",
       journal: "A&A",
       year: 2022,
-      adsUrl: "#",   // ← paste ADS link here
+      adsUrl: "https://scixplorer.org/abs/2022A%26A...668A.168C/abstract",   // ← paste ADS link here
       status: "published",
     },
     {
@@ -32,32 +32,32 @@ const MINCE = {
       title: "MINCE II — title",
       authors: "Cescutti G., Bonifacio P., Caffau E. et al.",
       journal: "A&A",
-      year: 2023,
-      adsUrl: "#",
+      year: 2024,
+      adsUrl: "https://scixplorer.org/abs/2024A%26A...686A.295F/abstract",
       status: "published",
     },
     {
       roman: "III",
       title: "MINCE III — title",
-      authors: "— et al.",
+      authors: "F. Lucertini — et al.",
       journal: "A&A",
-      year: 2024,
-      adsUrl: "#",
+      year: 2025,
+      adsUrl: "https://scixplorer.org/abs/2025A%26A...695A..36L/abstract",
       status: "published",
     },
     {
       roman: "IV",
       title: "MINCE IV — title",
-      authors: "— et al.",
+      authors: "L. Sgatti — et al.",
       journal: "A&A",
-      year: 2024,
-      adsUrl: "#",
+      year: 2026,
+      adsUrl: "https://scixplorer.org/abs/2026A%26A...714A.370S/abstract",
       status: "published",
     },
     {
       roman: "V",
       title: "MINCE V — MIKE observations",
-      authors: "— et al.",
+      authors: "L. Lombardo — et al.",
       journal: "A&A",
       year: null,
       adsUrl: null,
@@ -66,7 +66,7 @@ const MINCE = {
     {
       roman: "VI",
       title: "MINCE VI — title",
-      authors: "— et al.",
+      authors: "A. Schichtel — et al.",
       journal: "A&A",
       year: null,
       adsUrl: null,
@@ -81,7 +81,15 @@ const MINCE = {
     { name: "Gabriele Cescutti",      inst: "INAF Trieste, Italy",           role: "PI" },
     { name: "Elisabetta Caffau",      inst: "Obs. de Paris, France",         role: "" },
     { name: "Paolo di Marcantonio",   inst: "INAF Trieste, Italy",           role: "" },
-    { name: "M.G. Franchini",         inst: "INAF Trieste, Italy",           role: "" },
+    { name: "Maria Grazia Franchini",         inst: "INAF Trieste, Italy",           role: "" },
+    { name: "Camilla Juls Hansen",         inst: "INAF Trieste, Italy",           role: "" },
+    { name: "Andreas Korn",         inst: "INAF Trieste, Italy",           role: "" },
+    { name: "Luca Sbordone",         inst: "INAF Trieste, Italy",           role: "" },
+    { name: "Linda Lombardo",         inst: "INAF Trieste, Italy",           role: "" },
+    { name: "Francesca Lucertini",         inst: "INAF Trieste, Italy",           role: "" },
+    { name: "Thanh Chi Nguyen",         inst: "INAF Trieste, Italy",           role: "" },
+    { name: "Lapo Sgatti",         inst: "INAF Trieste, Italy",           role: "" },
+    { name: "The next person could be you ;)",         inst: "INAF Trieste, Italy",           role: "" },
     // ← add more collaborators here, same format
   ],
 
@@ -101,9 +109,9 @@ const MINCE = {
   // ── GitHub data links ─────────────────────────────────────────────────────
   // Fill these in once you set up the GitHub repo
   github: {
-    repoUrl:        "https://github.com/YOUR-ORG/mince",   // main repo
+    repoUrl:        "https://github.com/StarCat8/mince-siter",   // main repo
     releasesUrl:    "https://github.com/YOUR-ORG/mince/releases", // FITS files
-    catalogCsv:     "https://raw.githubusercontent.com/YOUR-ORG/mince/main/catalog.csv",
-    visualizerUrl:  "https://YOUR-ORG.github.io/mince/visualizer/", // existing visualizer
+    catalogCsv:     "https://github.com/StarCat8/mince_rep/blob/main/MINCE32.csv",
+    visualizerUrl:  "https://starcat8.github.io/mince_rep/", // existing visualizer
   },
 };
