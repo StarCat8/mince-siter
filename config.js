@@ -9,7 +9,7 @@ const MINCE = {
 
   // ── Project stats ─────────────────────────────────────────────────────────
   stats: {
-    starsAnalysed:  207,      // current number of analysed stars
+    starsAnalysed:  102,      // current number of analysed stars
     starsTarget:    1000,     // final catalog goal
     facilities:     8,        // number of telescopes
     papers:         4,        // published papers
