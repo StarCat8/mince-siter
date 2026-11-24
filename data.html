@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Data — MINCE</title>
+<link rel="stylesheet" href="style.css">
+<style>
+.data-block {
+  background:var(--surface); border:1px solid var(--border); border-radius:14px;
+  padding:2rem; margin-bottom:1.5rem;
+}
+.data-block h3 { font-size:1.15rem; font-weight:700; margin-bottom:.6rem; }
+.data-block p  { font-size:.9rem; color:var(--muted); margin-bottom:1.25rem; line-height:1.7; }
+.data-btns { display:flex; gap:.75rem; flex-wrap:wrap; }
+
+.fits-info {
+  background:var(--surface2); border:1px solid var(--border); border-radius:10px;
+  padding:1.1rem 1.5rem; font-size:.85rem; color:var(--muted);
+  display:flex; align-items:flex-start; gap:.75rem; margin-top:1rem;
+}
+.fits-info-icon { font-size:1.1rem; flex-shrink:0; }
+
+.how-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1.25rem; margin-top:2rem; }
+.how-step {
+  background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:1.25rem;
+}
+.how-step .num {
+  font-family:'Space Mono',monospace; font-size:.7rem; font-weight:700;
+  color:var(--accent); margin-bottom:.5rem;
+}
+.how-step h4 { font-size:.9rem; font-weight:600; margin-bottom:.4rem; }
+.how-step p  { font-size:.82rem; color:var(--muted); line-height:1.6; }
+
+.license-box {
+  background:rgba(192,132,252,.05); border:1px solid rgba(192,132,252,.2);
+  border-radius:10px; padding:1.25rem 1.5rem; font-size:.85rem;
+  color:var(--muted); margin-top:2rem; line-height:1.7;
+}
+.license-box a { color:var(--accent2); }
+
+@media (max-width:768px) { .how-grid { grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+<canvas id="starfield"></canvas>
+
+<nav>
+  <a href="index.html" class="nav-logo">MINCE</a>
+  <div class="nav-links">
+    <a href="science.html">Science</a>
+    <a href="facilities.html">Facilities</a>
+    <a href="data.html">Data</a>
+    <a href="team.html">Team</a>
+    <a href="papers.html">Papers</a>
+    <a href="observations.html">Observations</a>
+  </div>
+  <div class="nav-right"><a href="data.html" class="btn-sm">Access Data</a></div>
+</nav>
+
+<div class="page-header">
+  <div class="section-tag">Open data</div>
+  <h1>Data products &amp;<br><span class="hl">public spectra</span></h1>
+  <p>MINCE provides two complementary data products: a stellar parameters and abundance catalog, and reduced FITS spectra for each observed star.</p>
+</div>
+
+<section>
+  <div class="section-inner">
+
+    <!-- CATALOG -->
+    <div class="data-block">
+      <div class="section-tag">Catalog</div>
+      <h3>⭐ Stellar parameters &amp; chemical abundances</h3>
+      <p>207 metal-poor giants with atmospheric parameters (T<sub>eff</sub>, log&nbsp;g, [Fe/H], ξ) and chemical abundances for 30+ elements including neutron-capture tracers (Sr, Y, Zr, Ba, La, Ce, Eu, …). Updated with each publication.</p>
+      <div class="tag-row">
+        <span class="tag">CSV</span>
+        <span class="tag">207 stars</span>
+        <span class="tag">30+ elements</span>
+        <span class="tag">NLTE corrections</span>
+      </div>
+      <div class="data-btns">
+        <a id="btn-visualizer" href="#" class="btn-primary" target="_blank">Open interactive visualizer →</a>
+        <a id="btn-csv"        href="#" class="btn-outline"  target="_blank">Download catalog CSV</a>
+      </div>
+    </div>
+
+    <!-- FITS -->
+    <div class="data-block">
+      <div class="section-tag">Spectra</div>
+      <h3>📂 Reduced spectra (FITS files)</h3>
+      <p>Reduced, wavelength-calibrated 1D spectra for all 207 observed stars. Each star may have one or more spectra from different instruments. Files follow the naming convention <code>MINCE_&lt;STARNAME&gt;_&lt;INSTRUMENT&gt;_&lt;DATE&gt;.fits</code>. Hosted on GitHub Releases for direct download.</p>
+      <div class="tag-row">
+        <span class="tag purple">FITS</span>
+        <span class="tag purple">207 spectra</span>
+        <span class="tag purple">R ≥ 50,000</span>
+        <span class="tag purple">S/N ≥ 100</span>
+      </div>
+      <div class="data-btns">
+        <a id="btn-releases" href="#" class="btn-primary" target="_blank">Browse &amp; download FITS →</a>
+        <a id="btn-repo"     href="#" class="btn-outline"  target="_blank">GitHub repository</a>
+      </div>
+      <div class="fits-info">
+        <span class="fits-info-icon">ℹ️</span>
+        <span>FITS files are hosted on GitHub Releases. Each star's available files are listed on the GitHub release page. If you need a bulk download of all spectra, see the <code>README</code> in the repository for a <code>wget</code> script.</span>
+      </div>
+    </div>
+
+    <!-- HOW TO CITE -->
+    <div style="margin-top:2.5rem;">
+      <div class="section-tag">How to access the data</div>
+      <h2>Getting started</h2>
+      <div class="how-grid">
+        <div class="how-step">
+          <div class="num">01 — VISUALIZER</div>
+          <h4>Explore online</h4>
+          <p>Use the interactive browser to plot any pair of abundance ratios, filter by instrument, or search by star name. No installation needed.</p>
+        </div>
+        <div class="how-step">
+          <div class="num">02 — CSV DOWNLOAD</div>
+          <h4>Download the catalog</h4>
+          <p>The catalog CSV contains one row per star with all atmospheric parameters and abundance columns. Load it in Python, R or TOPCAT.</p>
+        </div>
+        <div class="how-step">
+          <div class="num">03 — FITS SPECTRA</div>
+          <h4>Download spectra</h4>
+          <p>Find your star on the GitHub Releases page, click the FITS file to download. Use <code>astropy.io.fits</code> or IRAF to open it.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="license-box">
+      <strong style="color:var(--text);">Data policy:</strong>
+      These data products are made available under the
+      <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank">Creative Commons Attribution 4.0 (CC BY 4.0)</a> license.
+      If you use MINCE data in a publication, please cite the relevant MINCE paper(s)
+      listed on the <a href="papers.html" style="color:var(--accent2);">Papers page</a>.
+    </div>
+  </div>
+</section>
+
+<footer>
+  <strong>MINCE</strong> — Measuring at Intermediate metallicity Neutron Capture Elements<br>
+  PI: Gabriele Cescutti &nbsp;·&nbsp; <a href="mailto:gabriele.cescutti@inaf.it">gabriele.cescutti@inaf.it</a><br>
+  Osservatorio Astronomico di Trieste, INAF · Via G.B. Tiepolo 11, 34131 Trieste, Italy
+</footer>
+
+<script src="config.js"></script>
+<script src="nav.js"></script>
+<script>
+// Wire up links from config.js
+document.getElementById('btn-visualizer').href = MINCE.github.visualizerUrl;
+document.getElementById('btn-csv').href        = MINCE.github.catalogCsv;
+document.getElementById('btn-releases').href   = MINCE.github.releasesUrl;
+document.getElementById('btn-repo').href       = MINCE.github.repoUrl;
+</script>
+</body>
+</html>

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Facilities — MINCE</title>
+<link rel="stylesheet" href="style.css">
+<style>
+#fac-grid {
+  display:grid; grid-template-columns:repeat(2,1fr); gap:1.5rem;
+}
+.fac-card {
+  background:var(--surface); border:1px solid var(--border); border-radius:12px;
+  padding:1.75rem; display:grid; grid-template-columns:auto 1fr; gap:1.25rem;
+  align-items:start; transition:border-color .2s;
+}
+.fac-card:hover { border-color:var(--accent2); }
+.fac-aperture {
+  font-family:'Space Mono',monospace; font-size:1.6rem; font-weight:700;
+  color:var(--gold); text-align:center; min-width:70px; padding-top:.25rem;
+}
+.fac-name { font-size:1.1rem; font-weight:700; margin-bottom:.2rem; }
+.fac-spec { font-size:.85rem; color:var(--accent); font-weight:600; margin-bottom:.3rem; }
+.fac-res  { font-size:.8rem; color:var(--muted); }
+.fac-loc  {
+  display:inline-flex; align-items:center; gap:.35rem;
+  font-size:.75rem; color:var(--muted); margin-top:.5rem;
+}
+
+.note-box {
+  background:rgba(79,158,255,.06); border:1px solid rgba(79,158,255,.2);
+  border-radius:10px; padding:1.25rem 1.5rem;
+  font-size:.875rem; color:var(--muted); line-height:1.65;
+  margin-top:2rem;
+}
+.note-box strong { color:var(--text); }
+
+@media (max-width:768px) { #fac-grid { grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+<canvas id="starfield"></canvas>
+
+<nav>
+  <a href="index.html" class="nav-logo">MINCE</a>
+  <div class="nav-links">
+    <a href="science.html">Science</a>
+    <a href="facilities.html">Facilities</a>
+    <a href="data.html">Data</a>
+    <a href="team.html">Team</a>
+    <a href="papers.html">Papers</a>
+    <a href="observations.html">Observations</a>
+  </div>
+  <div class="nav-right"><a href="data.html" class="btn-sm">Access Data</a></div>
+</nav>
+
+<div class="page-header">
+  <div class="section-tag">Instrumentation</div>
+  <h1>Eight world-class<br><span class="hl">telescope facilities</span></h1>
+  <p>MINCE observations use high-resolution echelle spectrographs mounted on telescopes across Europe, the Americas and beyond, covering both hemispheres.</p>
+</div>
+
+<section>
+  <div class="section-inner">
+    <div id="fac-grid"><!-- filled by JS --></div>
+    <div class="note-box">
+      <strong>Aperture sizes</strong> listed above are taken from <code>config.js</code> — edit that file to correct them.
+      All instruments deliver R ≥ 50,000 with S/N ≥ 100 at 5000 Å per pixel.
+      Wavelength coverage spans roughly 3800–9000 Å depending on the spectrograph,
+      sufficient to measure lines of elements from Li to Pb.
+    </div>
+  </div>
+</section>
+
+<section class="alt-bg">
+  <div class="section-inner">
+    <div class="section-tag">Why so many telescopes?</div>
+    <h2>Northern &amp; southern sky coverage</h2>
+    <p class="lead">Metal-poor stars are distributed across the whole sky. No single observatory can reach all targets. The multi-facility strategy also enables cross-checks of the analysis pipeline between instruments.</p>
+    <div class="grid-3">
+      <div class="card">
+        <div class="card-icon">🌍</div>
+        <h3>Full sky coverage</h3>
+        <p>TNG, CFHT, OHP, NOT and Molėtai cover the northern hemisphere; VLT, MPG/ESO and Magellan cover the south. Together they reach every PASTEL target.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">✅</div>
+        <h3>Cross-calibration</h3>
+        <p>Overlapping targets observed with multiple instruments allow systematic offsets between pipelines to be identified and corrected before combining results.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">⏱️</div>
+        <h3>Telescope time efficiency</h3>
+        <p>Distributing targets across facilities means that bright targets go to smaller telescopes, freeing VLT and Magellan time for the faintest, most metal-poor stars.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <strong>MINCE</strong> — Measuring at Intermediate metallicity Neutron Capture Elements<br>
+  PI: Gabriele Cescutti &nbsp;·&nbsp; <a href="mailto:gabriele.cescutti@inaf.it">gabriele.cescutti@inaf.it</a><br>
+  Osservatorio Astronomico di Trieste, INAF · Via G.B. Tiepolo 11, 34131 Trieste, Italy
+</footer>
+
+<script src="config.js"></script>
+<script src="nav.js"></script>
+<script>
+// Render facilities from config.js
+const grid = document.getElementById('fac-grid');
+MINCE.facilities.forEach(f => {
+  grid.innerHTML += `
+  <div class="fac-card">
+    <div class="fac-aperture">${f.aperture}</div>
+    <div>
+      <div class="fac-name">${f.name}</div>
+      <div class="fac-spec">${f.spectrograph} &nbsp;·&nbsp; R = ${f.resolution}</div>
+      <div class="fac-loc">📍 ${f.location}</div>
+    </div>
+  </div>`;
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Observations — MINCE</title>
+<link rel="stylesheet" href="style.css">
+<style>
+.obs-table-wrap {
+  background:var(--surface); border:1px solid var(--border); border-radius:12px;
+  overflow:hidden; margin-bottom:2rem;
+}
+.obs-table { width:100%; border-collapse:collapse; font-size:.875rem; }
+.obs-table th {
+  background:var(--surface2); padding:.75rem 1rem; text-align:left;
+  font-size:.72rem; font-weight:600; color:var(--muted);
+  text-transform:uppercase; letter-spacing:.07em;
+  border-bottom:1px solid var(--border);
+}
+.obs-table td { padding:.75rem 1rem; border-bottom:1px solid var(--border); }
+.obs-table tr:last-child td { border-bottom:none; }
+.obs-table tr:hover td { background:rgba(255,255,255,.025); }
+.instr-badge {
+  padding:.15rem .55rem; border-radius:4px; font-size:.72rem; font-weight:600;
+  font-family:'Space Mono',monospace;
+}
+.instr-harps  { background:rgba(79,158,255,.1);  border:1px solid rgba(79,158,255,.2);  color:var(--accent); }
+.instr-uves   { background:rgba(245,200,66,.1);  border:1px solid rgba(245,200,66,.2);  color:var(--gold); }
+.instr-espad  { background:rgba(192,132,252,.1); border:1px solid rgba(192,132,252,.2); color:var(--accent2); }
+.instr-sophie { background:rgba(66,245,135,.1);  border:1px solid rgba(66,245,135,.2);  color:#42f587; }
+.instr-fies   { background:rgba(245,135,66,.1);  border:1px solid rgba(245,135,66,.2);  color:#f58742; }
+.instr-mike   { background:rgba(245,66,66,.1);   border:1px solid rgba(245,66,66,.2);   color:#f54242; }
+.instr-feros  { background:rgba(66,200,245,.1);  border:1px solid rgba(66,200,245,.2);  color:#42c8f5; }
+.instr-vues   { background:rgba(135,245,66,.1);  border:1px solid rgba(135,245,66,.2);  color:#87f542; }
+
+.note-box {
+  background:rgba(79,158,255,.06); border:1px solid rgba(79,158,255,.2);
+  border-radius:10px; padding:1.1rem 1.5rem; font-size:.85rem; color:var(--muted); line-height:1.65;
+}
+.note-box code { color:var(--accent); font-family:'Space Mono',monospace; }
+</style>
+</head>
+<body>
+<canvas id="starfield"></canvas>
+
+<nav>
+  <a href="index.html" class="nav-logo">MINCE</a>
+  <div class="nav-links">
+    <a href="science.html">Science</a>
+    <a href="facilities.html">Facilities</a>
+    <a href="data.html">Data</a>
+    <a href="team.html">Team</a>
+    <a href="papers.html">Papers</a>
+    <a href="observations.html">Observations</a>
+  </div>
+  <div class="nav-right"><a href="data.html" class="btn-sm">Access Data</a></div>
+</nav>
+
+<div class="page-header">
+  <div class="section-tag">Summary</div>
+  <h1>Summary of<br><span class="hl">observations</span></h1>
+  <p>Overview of observed stars, instruments used and observing runs. Updated with each new data release.</p>
+</div>
+
+<section>
+  <div class="section-inner">
+    <!-- Stats row -->
+    <div class="stats-bar" style="border-radius:12px;overflow:hidden;margin-bottom:2.5rem;">
+      <div class="stat-item"><div class="stat-num">207</div><div class="stat-label">Stars observed</div></div>
+      <div class="stat-item"><div class="stat-num">8</div><div class="stat-label">Instruments</div></div>
+      <div class="stat-item"><div class="stat-num">30+</div><div class="stat-label">Elements per star</div></div>
+      <div class="stat-item"><div class="stat-num">≥100</div><div class="stat-label">S/N (px⁻¹ at 5000Å)</div></div>
+    </div>
+
+    <div class="note-box" style="margin-bottom:2rem;">
+      This page shows a placeholder table. To populate it with real data,
+      replace the <code>sampleStars</code> array in this page's script,
+      or point it at your <code>catalog.csv</code> on GitHub.
+    </div>
+
+    <div class="obs-table-wrap">
+      <table class="obs-table" id="obs-table">
+        <thead>
+          <tr>
+            <th>Star</th>
+            <th>T<sub>eff</sub> (K)</th>
+            <th>log g</th>
+            <th>[Fe/H]</th>
+            <th>Instrument</th>
+            <th>S/N</th>
+            <th>MINCE paper</th>
+          </tr>
+        </thead>
+        <tbody id="obs-tbody"></tbody>
+      </table>
+    </div>
+
+    <div class="btns">
+      <a href="data.html" class="btn-primary">Download full catalog →</a>
+      <a href="data.html#fits" class="btn-outline">Get FITS spectra</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <strong>MINCE</strong> — Measuring at Intermediate metallicity Neutron Capture Elements<br>
+  PI: Gabriele Cescutti &nbsp;·&nbsp; <a href="mailto:gabriele.cescutti@inaf.it">gabriele.cescutti@inaf.it</a><br>
+  Osservatorio Astronomico di Trieste, INAF · Via G.B. Tiepolo 11, 34131 Trieste, Italy
+</footer>
+
+<script src="config.js"></script>
+<script src="nav.js"></script>
+<script>
+// Sample placeholder data — replace with real catalog or fetch from catalog.csv
+const sampleStars = [
+  { name:"HD 122563", teff:4600, logg:1.60, feh:-2.74, instr:"ESPRESSO", snr:660, paper:"I" },
+  { name:"HD 140283", teff:5777, logg:3.67, feh:-2.46, instr:"HARPS-N",  snr:420, paper:"I" },
+  { name:"HD  22879", teff:5868, logg:4.27, feh:-0.86, instr:"SOPHIE",   snr:310, paper:"II" },
+  { name:"HD  85773", teff:4615, logg:0.90, feh:-2.08, instr:"UVES",     snr:280, paper:"II" },
+  { name:"CS 22892-052", teff:4850, logg:1.60, feh:-3.10, instr:"MIKE",  snr:200, paper:"III" },
+  { name:"HD  74462", teff:4420, logg:0.60, feh:-1.55, instr:"FIES",     snr:245, paper:"III" },
+  { name:"HD  31128", teff:5922, logg:4.26, feh:-1.49, instr:"ESPaDOnS", snr:520, paper:"IV" },
+  { name:"HD 108317", teff:5260, logg:2.73, feh:-2.17, instr:"FEROS",    snr:380, paper:"IV" },
+  { name:"BD+09 2190",teff:4680, logg:1.20, feh:-2.59, instr:"VUES",     snr:170, paper:"IV" },
+];
+
+const instrClass = {
+  "ESPRESSO":"harps","HARPS-N":"harps","SOPHIE":"sophie","UVES":"uves",
+  "MIKE":"mike","FIES":"fies","ESPaDOnS":"espad","FEROS":"feros","VUES":"vues"
+};
+
+const tbody = document.getElementById('obs-tbody');
+sampleStars.forEach(s => {
+  const cls = instrClass[s.instr] || 'harps';
+  tbody.innerHTML += `<tr>
+    <td style="font-family:'Space Mono',monospace;font-weight:600;">${s.name}</td>
+    <td>${s.teff}</td>
+    <td>${s.logg.toFixed(2)}</td>
+    <td>${s.feh.toFixed(2)}</td>
+    <td><span class="instr-badge instr-${cls}">${s.instr}</span></td>
+    <td>${s.snr}</td>
+    <td><a href="papers.html" style="color:var(--accent);text-decoration:none;">MINCE ${s.paper}</a></td>
+  </tr>`;
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Papers — MINCE</title>
+<link rel="stylesheet" href="style.css">
+<style>
+.paper-card {
+  background:var(--surface); border:1px solid var(--border); border-radius:12px;
+  padding:1.5rem 1.75rem; display:flex; align-items:center; gap:1.5rem;
+  transition:border-color .2s;
+}
+.paper-card:hover { border-color:var(--accent); }
+.paper-roman {
+  font-family:'Space Mono',monospace; font-size:1.1rem; font-weight:700;
+  color:var(--accent); min-width:60px; text-align:center;
+  background:rgba(79,158,255,.08); border:1px solid rgba(79,158,255,.2);
+  border-radius:8px; padding:.4rem .6rem;
+}
+.paper-body { flex:1; }
+.paper-title   { font-size:.95rem; font-weight:600; margin-bottom:.3rem; }
+.paper-authors { font-size:.8rem; color:var(--muted); }
+.paper-meta    { font-size:.78rem; color:var(--muted); margin-top:.3rem; }
+.paper-status-pub  {
+  padding:.3rem .9rem; border-radius:5px; font-size:.72rem; font-weight:700;
+  background:rgba(79,158,255,.1); border:1px solid rgba(79,158,255,.25); color:var(--accent);
+  text-decoration:none; white-space:nowrap;
+}
+.paper-status-prep {
+  padding:.3rem .9rem; border-radius:5px; font-size:.72rem; font-weight:700;
+  background:rgba(245,200,66,.08); border:1px solid rgba(245,200,66,.2); color:var(--gold);
+  white-space:nowrap;
+}
+#papers-list { display:flex; flex-direction:column; gap:1rem; }
+</style>
+</head>
+<body>
+<canvas id="starfield"></canvas>
+
+<nav>
+  <a href="index.html" class="nav-logo">MINCE</a>
+  <div class="nav-links">
+    <a href="science.html">Science</a>
+    <a href="facilities.html">Facilities</a>
+    <a href="data.html">Data</a>
+    <a href="team.html">Team</a>
+    <a href="papers.html">Papers</a>
+    <a href="observations.html">Observations</a>
+  </div>
+  <div class="nav-right"><a href="data.html" class="btn-sm">Access Data</a></div>
+</nav>
+
+<div class="page-header">
+  <div class="section-tag">Publications</div>
+  <h1>MINCE <span class="hl">paper series</span></h1>
+  <p>All MINCE results are published open-access. Add or update ADS links in <code>config.js</code>.</p>
+</div>
+
+<section>
+  <div class="section-inner">
+    <div id="papers-list"><!-- filled by JS --></div>
+  </div>
+</section>
+
+<footer>
+  <strong>MINCE</strong> — Measuring at Intermediate metallicity Neutron Capture Elements<br>
+  PI: Gabriele Cescutti &nbsp;·&nbsp; <a href="mailto:gabriele.cescutti@inaf.it">gabriele.cescutti@inaf.it</a><br>
+  Osservatorio Astronomico di Trieste, INAF · Via G.B. Tiepolo 11, 34131 Trieste, Italy
+</footer>
+
+<script src="config.js"></script>
+<script src="nav.js"></script>
+<script>
+const list = document.getElementById('papers-list');
+MINCE.papers.forEach(p => {
+  const isPrep = p.status === 'inprep';
+  const badge = isPrep
+    ? `<span class="paper-status-prep">In preparation</span>`
+    : `<a href="${p.adsUrl}" class="paper-status-pub" target="_blank">ADS →</a>`;
+  list.innerHTML += `
+  <div class="paper-card">
+    <div class="paper-roman">MINCE<br>${p.roman}</div>
+    <div class="paper-body">
+      <div class="paper-title">${p.title}</div>
+      <div class="paper-authors">${p.authors}</div>
+      <div class="paper-meta">${p.journal}${p.year ? ' · ' + p.year : ''}</div>
+    </div>
+    ${badge}
+  </div>`;
+});
+</script>
+</body>
+</html>

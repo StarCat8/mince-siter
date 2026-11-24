@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Team — MINCE</title>
+<link rel="stylesheet" href="style.css">
+<style>
+#team-grid {
+  display:grid; grid-template-columns:repeat(4,1fr); gap:1.25rem;
+}
+.team-card {
+  background:var(--surface); border:1px solid var(--border); border-radius:12px;
+  padding:1.5rem 1.25rem; text-align:center; transition:border-color .2s;
+}
+.team-card:hover { border-color:var(--accent2); }
+.team-avatar {
+  width:64px; height:64px; border-radius:50%;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  display:flex; align-items:center; justify-content:center;
+  font-size:1.4rem; margin:0 auto 1rem; font-weight:700; color:#fff;
+  font-family:'Space Mono',monospace;
+}
+.team-name { font-size:.9rem; font-weight:600; margin-bottom:.3rem; }
+.team-inst { font-size:.75rem; color:var(--muted); line-height:1.5; }
+.team-role {
+  display:inline-block; margin-top:.5rem;
+  padding:.15rem .55rem; border-radius:4px; font-size:.7rem; font-weight:600;
+  background:rgba(79,158,255,.1); border:1px solid rgba(79,158,255,.2); color:var(--accent);
+}
+.edit-hint {
+  background:rgba(245,200,66,.06); border:1px solid rgba(245,200,66,.2);
+  border-radius:10px; padding:1rem 1.5rem; font-size:.85rem; color:var(--muted);
+  margin-bottom:2.5rem;
+}
+.edit-hint strong { color:var(--gold); }
+@media (max-width:900px) { #team-grid { grid-template-columns:repeat(2,1fr); } }
+@media (max-width:500px)  { #team-grid { grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+<canvas id="starfield"></canvas>
+
+<nav>
+  <a href="index.html" class="nav-logo">MINCE</a>
+  <div class="nav-links">
+    <a href="science.html">Science</a>
+    <a href="facilities.html">Facilities</a>
+    <a href="data.html">Data</a>
+    <a href="team.html">Team</a>
+    <a href="papers.html">Papers</a>
+    <a href="observations.html">Observations</a>
+  </div>
+  <div class="nav-right"><a href="data.html" class="btn-sm">Access Data</a></div>
+</nav>
+
+<div class="page-header">
+  <div class="section-tag">People</div>
+  <h1>The <span class="hl">MINCE team</span></h1>
+  <p>Astronomers from institutions across Europe collaborate on target selection, observations, data reduction and chemical abundance analysis.</p>
+</div>
+
+<section>
+  <div class="section-inner">
+    <div class="edit-hint">
+      <strong>To add or update collaborators</strong>, edit the <code>team</code> array in <code>config.js</code>.
+      No HTML editing needed.
+    </div>
+    <div id="team-grid"><!-- filled by JS --></div>
+  </div>
+</section>
+
+<footer>
+  <strong>MINCE</strong> — Measuring at Intermediate metallicity Neutron Capture Elements<br>
+  PI: Gabriele Cescutti &nbsp;·&nbsp; <a href="mailto:gabriele.cescutti@inaf.it">gabriele.cescutti@inaf.it</a><br>
+  Osservatorio Astronomico di Trieste, INAF · Via G.B. Tiepolo 11, 34131 Trieste, Italy
+</footer>
+
+<script src="config.js"></script>
+<script src="nav.js"></script>
+<script>
+const grid = document.getElementById('team-grid');
+MINCE.team.forEach(p => {
+  const initials = p.name.split(' ').map(w=>w[0]).slice(0,2).join('');
+  grid.innerHTML += `
+  <div class="team-card">
+    <div class="team-avatar">${initials}</div>
+    <div class="team-name">${p.name}</div>
+    <div class="team-inst">${p.inst}</div>
+    ${p.role ? `<div class="team-role">${p.role}</div>` : ''}
+  </div>`;
+});
+</script>
+</body>
+</html>

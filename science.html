@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Science — MINCE</title>
+<link rel="stylesheet" href="style.css">
+<style>
+.process-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1.5rem; margin-bottom:3rem; }
+.process-card {
+  background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:1.75rem;
+  position:relative; overflow:hidden;
+}
+.process-card::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:3px;
+}
+.process-card.r-proc::before { background:linear-gradient(90deg,#f56742,#f5a042); }
+.process-card.s-proc::before { background:linear-gradient(90deg,var(--accent),#42a5f5); }
+.process-card.i-proc::before { background:linear-gradient(90deg,var(--accent2),#f542d4); }
+.process-label {
+  font-family:'Space Mono',monospace; font-size:.7rem; font-weight:700;
+  letter-spacing:.12em; text-transform:uppercase; margin-bottom:.6rem;
+}
+.r-proc .process-label { color:#f56742; }
+.s-proc .process-label { color:var(--accent); }
+.i-proc .process-label { color:var(--accent2); }
+.process-card h3 { font-size:1.05rem; font-weight:600; margin-bottom:.6rem; }
+.process-card p  { font-size:.875rem; color:var(--muted); line-height:1.7; }
+
+.goals-list { list-style:none; display:flex; flex-direction:column; gap:.85rem; counter-reset:goal; }
+.goals-list li {
+  display:flex; gap:1rem; align-items:flex-start;
+  background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:1.1rem 1.25rem;
+  counter-increment:goal;
+}
+.goals-list li::before {
+  content:counter(goal,'0'counter(goal));
+  font-family:'Space Mono',monospace; font-size:.8rem; font-weight:700;
+  color:var(--accent); min-width:28px; padding-top:.1rem;
+}
+.goals-list li p { font-size:.9rem; color:var(--muted); margin-top:.2rem; }
+.goals-list li strong { color:var(--text); }
+
+.method-wrap { display:grid; grid-template-columns:1fr 1fr; gap:3rem; align-items:start; }
+.method-step { display:flex; gap:1.25rem; margin-bottom:1.5rem; }
+.step-num {
+  width:36px; height:36px; border-radius:50%; flex-shrink:0;
+  background:rgba(79,158,255,.12); border:1px solid rgba(79,158,255,.25);
+  display:flex; align-items:center; justify-content:center;
+  font-family:'Space Mono',monospace; font-size:.8rem; font-weight:700; color:var(--accent);
+}
+.step-text h4 { font-size:.95rem; font-weight:600; margin-bottom:.3rem; }
+.step-text p  { font-size:.85rem; color:var(--muted); line-height:1.65; }
+
+.element-row { display:flex; flex-wrap:wrap; gap:.5rem; }
+.el-chip {
+  padding:.25rem .65rem; border-radius:6px; font-size:.78rem; font-weight:600;
+  font-family:'Space Mono',monospace;
+}
+.el-fe  { background:rgba(245,200,66,.1);  border:1px solid rgba(245,200,66,.25);  color:var(--gold); }
+.el-s   { background:rgba(79,158,255,.1);  border:1px solid rgba(79,158,255,.25);  color:var(--accent); }
+.el-r   { background:rgba(245,87,66,.1);   border:1px solid rgba(245,87,66,.25);   color:#f56742; }
+.el-i   { background:rgba(192,132,252,.1); border:1px solid rgba(192,132,252,.25); color:var(--accent2); }
+
+@media (max-width:768px) {
+  .process-grid  { grid-template-columns:1fr; }
+  .method-wrap   { grid-template-columns:1fr; }
+}
+</style>
+</head>
+<body>
+<canvas id="starfield"></canvas>
+
+<nav>
+  <a href="index.html" class="nav-logo">MINCE</a>
+  <div class="nav-links">
+    <a href="science.html">Science</a>
+    <a href="facilities.html">Facilities</a>
+    <a href="data.html">Data</a>
+    <a href="team.html">Team</a>
+    <a href="papers.html">Papers</a>
+    <a href="observations.html">Observations</a>
+  </div>
+  <div class="nav-right"><a href="data.html" class="btn-sm">Access Data</a></div>
+</nav>
+
+<div class="page-header">
+  <div class="section-tag">Scientific background</div>
+  <h1>Neutron capture processes<br>in the <span class="hl">metal-poor universe</span></h1>
+  <p>Elements heavier than iron cannot be forged in ordinary stellar burning. They require an intense flux of neutrons — and their abundances encode the history of some of the most extreme events in the universe.</p>
+</div>
+
+<!-- THE THREE PROCESSES -->
+<section>
+  <div class="section-inner">
+    <div class="section-tag">The three channels</div>
+    <h2>s, r, and i — three neutron capture processes</h2>
+    <p class="lead">Heavy elements from strontium (Z=38) to uranium (Z=92) are produced via neutron capture onto seed nuclei. The neutron density determines which of three regimes applies.</p>
+    <div class="process-grid">
+      <div class="process-card r-proc">
+        <div class="process-label">r-process · rapid</div>
+        <h3>Neutron star mergers &amp; rare CCSNe</h3>
+        <p>At neutron densities n<sub>n</sub> ≫ 10²⁰ cm⁻³, the rapid process builds nuclei far from stability. The 2017 kilonova GW170817 confirmed NSMs as a major r-process site. Europium (Eu) is its best tracer.</p>
+      </div>
+      <div class="process-card s-proc">
+        <div class="process-label">s-process · slow</div>
+        <h3>AGB stars</h3>
+        <p>At low neutron densities (n<sub>n</sub> ~ 10⁷ cm⁻³), captures proceed near the valley of stability. AGB stars are the dominant site. At low metallicity [Fe/H] &lt; −1.5, their contribution is minimal. Barium (Ba) is a key tracer.</p>
+      </div>
+      <div class="process-card i-proc">
+        <div class="process-label">i-process · intermediate</div>
+        <h3>Super-AGB &amp; rapidly accreting WDs</h3>
+        <p>At intermediate densities (10¹³–10¹⁵ cm⁻³), the i-process may explain the abundance patterns of CEMP-s/r stars and certain metal-poor giants that cannot be reproduced by s or r alone.</p>
+      </div>
+    </div>
+
+    <!-- Elements measured -->
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.75rem;">
+      <div class="section-tag" style="margin-bottom:1rem;">Elements measured in MINCE stars</div>
+      <div style="margin-bottom:.75rem;font-size:.8rem;color:var(--muted);">Light &amp; iron-peak — reference:</div>
+      <div class="element-row" style="margin-bottom:1rem;">
+        <span class="el-chip el-fe">C</span><span class="el-chip el-fe">Na</span>
+        <span class="el-chip el-fe">Mg</span><span class="el-chip el-fe">Al</span>
+        <span class="el-chip el-fe">Si</span><span class="el-chip el-fe">Ca</span>
+        <span class="el-chip el-fe">Sc</span><span class="el-chip el-fe">Ti</span>
+        <span class="el-chip el-fe">V</span><span class="el-chip el-fe">Cr</span>
+        <span class="el-chip el-fe">Mn</span><span class="el-chip el-fe">Fe</span>
+        <span class="el-chip el-fe">Co</span><span class="el-chip el-fe">Ni</span>
+        <span class="el-chip el-fe">Zn</span>
+      </div>
+      <div style="margin-bottom:.75rem;font-size:.8rem;color:var(--muted);">s-process tracers:</div>
+      <div class="element-row" style="margin-bottom:1rem;">
+        <span class="el-chip el-s">Sr</span><span class="el-chip el-s">Y</span>
+        <span class="el-chip el-s">Zr</span><span class="el-chip el-s">Ba</span>
+        <span class="el-chip el-s">La</span><span class="el-chip el-s">Ce</span>
+        <span class="el-chip el-s">Pr</span><span class="el-chip el-s">Nd</span>
+        <span class="el-chip el-s">Pb</span>
+      </div>
+      <div style="margin-bottom:.75rem;font-size:.8rem;color:var(--muted);">r-process tracers:</div>
+      <div class="element-row">
+        <span class="el-chip el-r">Sm</span><span class="el-chip el-r">Eu</span>
+        <span class="el-chip el-r">Gd</span><span class="el-chip el-r">Tb</span>
+        <span class="el-chip el-r">Dy</span><span class="el-chip el-r">Ho</span>
+        <span class="el-chip el-r">Er</span><span class="el-chip el-r">Tm</span>
+        <span class="el-chip el-r">Yb</span><span class="el-chip el-r">Lu</span>
+        <span class="el-chip el-r">Hf</span><span class="el-chip el-r">Os</span>
+        <span class="el-chip el-r">Ir</span><span class="el-chip el-r">Th</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SCIENCE GOALS -->
+<section class="alt-bg">
+  <div class="section-inner">
+    <div class="section-tag">Goals</div>
+    <h2>What MINCE aims to answer</h2>
+    <ul class="goals-list">
+      <li><div>
+        <strong>What is the relative contribution of NSMs vs CCSNe to the r-process budget?</strong>
+        <p>The scatter in [Eu/Fe] at low metallicity is a key diagnostic. A large homogeneous sample is needed to separate stochastic enrichment from systematic trends.</p>
+      </div></li>
+      <li><div>
+        <strong>When does the s-process turn on?</strong>
+        <p>AGB stars have a minimum metallicity threshold. The [Ba/Eu] ratio tracks the s/r balance — MINCE provides the statistical power to map its evolution precisely.</p>
+      </div></li>
+      <li><div>
+        <strong>What is the frequency and abundance signature of i-process events?</strong>
+        <p>Specific [La/Eu], [Ba/Sr] patterns distinguish the i-process from mixed s+r. A sample of 1,000 stars allows a statistical determination of its occurrence rate.</p>
+      </div></li>
+      <li><div>
+        <strong>How did the Milky Way assemble its metal-poor halo?</strong>
+        <p>Chemical "tagging" with neutron capture elements can distinguish accreted dwarf-galaxy debris from in-situ halo stars, complementing kinematic studies.</p>
+      </div></li>
+    </ul>
+  </div>
+</section>
+
+<!-- METHODOLOGY -->
+<section>
+  <div class="section-inner">
+    <div class="section-tag">Methodology</div>
+    <h2>How we measure abundances</h2>
+    <div class="method-wrap">
+      <div>
+        <div class="method-step">
+          <div class="step-num">1</div>
+          <div class="step-text">
+            <h4>Target selection</h4>
+            <p>Metal-poor giants (0 &lt; log g &lt; 2.5, −3 &lt; [Fe/H] &lt; −0.5, 4000 &lt; T<sub>eff</sub> &lt; 5500 K) selected from PASTEL and literature compilations.</p>
+          </div>
+        </div>
+        <div class="method-step">
+          <div class="step-num">2</div>
+          <div class="step-text">
+            <h4>High-resolution spectroscopy</h4>
+            <p>Spectra at R ≥ 50,000 and S/N ≥ 100 per pixel at 5000 Å, obtained with 8 spectrographs. All data reduced with instrument-specific pipelines.</p>
+          </div>
+        </div>
+        <div class="method-step">
+          <div class="step-num">3</div>
+          <div class="step-text">
+            <h4>Atmospheric parameters</h4>
+            <p>T<sub>eff</sub> from photometric calibrations and spectroscopic excitation balance; log g from ionisation equilibrium; [Fe/H] from Fe II lines; ξ from curve of growth.</p>
+          </div>
+        </div>
+        <div class="method-step">
+          <div class="step-num">4</div>
+          <div class="step-text">
+            <h4>Abundance analysis</h4>
+            <p>1D LTE equivalent-width analysis and spectrum synthesis for blended lines. NLTE corrections applied where available. MARCS model atmospheres.</p>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.75rem;">
+          <div class="section-tag" style="margin-bottom:1rem;">Sample selection criteria</div>
+          <table style="width:100%;border-collapse:collapse;font-size:.875rem;">
+            <tr style="border-bottom:1px solid var(--border);">
+              <td style="padding:.6rem 0;color:var(--muted);">T<sub>eff</sub></td>
+              <td style="padding:.6rem 0;text-align:right;font-family:'Space Mono',monospace;color:var(--text);">4000 – 5500 K</td>
+            </tr>
+            <tr style="border-bottom:1px solid var(--border);">
+              <td style="padding:.6rem 0;color:var(--muted);">log g</td>
+              <td style="padding:.6rem 0;text-align:right;font-family:'Space Mono',monospace;color:var(--text);">0.0 – 2.5 dex</td>
+            </tr>
+            <tr style="border-bottom:1px solid var(--border);">
+              <td style="padding:.6rem 0;color:var(--muted);">[Fe/H]</td>
+              <td style="padding:.6rem 0;text-align:right;font-family:'Space Mono',monospace;color:var(--text);">−3.0 – −0.5</td>
+            </tr>
+            <tr style="border-bottom:1px solid var(--border);">
+              <td style="padding:.6rem 0;color:var(--muted);">S/N</td>
+              <td style="padding:.6rem 0;text-align:right;font-family:'Space Mono',monospace;color:var(--text);">≥ 100 px⁻¹</td>
+            </tr>
+            <tr>
+              <td style="padding:.6rem 0;color:var(--muted);">Resolving power</td>
+              <td style="padding:.6rem 0;text-align:right;font-family:'Space Mono',monospace;color:var(--text);">R ≥ 50,000</td>
+            </tr>
+          </table>
+        </div>
+        <div style="margin-top:1.25rem;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.5rem;">
+          <div class="section-tag" style="margin-bottom:.75rem;">Key diagnostic ratios</div>
+          <div style="display:flex;flex-direction:column;gap:.6rem;font-size:.875rem;">
+            <div style="display:flex;justify-content:space-between;border-bottom:1px solid var(--border);padding-bottom:.5rem;">
+              <span style="font-family:'Space Mono',monospace;color:var(--accent)">[Eu/Fe]</span>
+              <span style="color:var(--muted)">r-process enrichment level</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;border-bottom:1px solid var(--border);padding-bottom:.5rem;">
+              <span style="font-family:'Space Mono',monospace;color:var(--accent)">[Ba/Eu]</span>
+              <span style="color:var(--muted)">s/r ratio</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;border-bottom:1px solid var(--border);padding-bottom:.5rem;">
+              <span style="font-family:'Space Mono',monospace;color:var(--accent)">[Sr/Ba]</span>
+              <span style="color:var(--muted)">light/heavy s-process</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;">
+              <span style="font-family:'Space Mono',monospace;color:var(--accent)">[La/Eu]</span>
+              <span style="color:var(--muted)">i-process tracer</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <strong>MINCE</strong> — Measuring at Intermediate metallicity Neutron Capture Elements<br>
+  PI: Gabriele Cescutti &nbsp;·&nbsp; <a href="mailto:gabriele.cescutti@inaf.it">gabriele.cescutti@inaf.it</a><br>
+  Osservatorio Astronomico di Trieste, INAF · Via G.B. Tiepolo 11, 34131 Trieste, Italy
+</footer>
+<script src="config.js"></script><script src="nav.js"></script>
+</body>
+</html>
