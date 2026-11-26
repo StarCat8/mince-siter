@@ -113,5 +113,6 @@ const MINCE = {
     releasesUrl:    "https://github.com/YOUR-ORG/mince/releases", // FITS files
     catalogCsv:     "https://github.com/StarCat8/mince_rep/blob/main/MINCE32.csv",
     visualizerUrl:  "https://starcat8.github.io/mince_rep/", // existing visualizer
+    spectraUrl:     "https://starcat8.github.io/mince_rep/spectra.html", // spectra archive (browse / plot / download FITS)
   },
 };

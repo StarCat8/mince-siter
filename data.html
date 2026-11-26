@@ -96,7 +96,7 @@
         <span class="tag purple">S/N ≥ 100</span>
       </div>
       <div class="data-btns">
-        <a id="btn-releases" href="#" class="btn-primary" target="_blank">Browse &amp; download FITS →</a>
+        <a id="btn-releases" href="#" class="btn-primary" target="_blank">Browse, plot &amp; download FITS →</a>
         <a id="btn-repo"     href="#" class="btn-outline"  target="_blank">GitHub repository</a>
       </div>
       <div class="fits-info">
@@ -150,7 +150,7 @@
 // Wire up links from config.js
 document.getElementById('btn-visualizer').href = MINCE.github.visualizerUrl;
 document.getElementById('btn-csv').href        = MINCE.github.catalogCsv;
-document.getElementById('btn-releases').href   = MINCE.github.releasesUrl;
+document.getElementById('btn-releases').href   = MINCE.github.spectraUrl || MINCE.github.releasesUrl;
 document.getElementById('btn-repo').href       = MINCE.github.repoUrl;
 </script>
 </body>
