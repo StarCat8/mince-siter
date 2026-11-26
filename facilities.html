@@ -169,7 +169,8 @@ function imageCandidates(f) {
 
 // headline count
 const WORDS = ['Zero','One','Two','Three','Four','Five','Six','Seven','Eight','Nine','Ten','Eleven','Twelve'];
-document.getElementById('fac-count').textContent = WORDS[FAC.length] || FAC.length;
+const countEl = document.getElementById('fac-count');   // optional: <span id="fac-count"></span> in the title
+if (countEl) countEl.textContent = WORDS[FAC.length] || FAC.length;
 
 // cards
 document.getElementById('fac-grid').innerHTML = FAC.map((f, i) => `
