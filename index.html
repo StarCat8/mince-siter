@@ -1,195 +1,147 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MINCE — Measuring at Intermediate metallicity Neutron Capture Elements</title>
-<link rel="stylesheet" href="style.css">
-<style>
-.hero {
-  position:relative; z-index:1; min-height:88vh;
-  display:flex; flex-direction:column; justify-content:center; align-items:center;
-  text-align:center; padding:4rem 2rem;
-}
-.hero-badge {
-  display:inline-block;
-  background:rgba(79,158,255,.1); border:1px solid rgba(79,158,255,.3);
-  color:var(--accent); font-size:.75rem; font-weight:600;
-  letter-spacing:.1em; text-transform:uppercase;
-  padding:.3rem .9rem; border-radius:20px; margin-bottom:1.5rem;
-}
-.hero h1 { font-size:clamp(2rem,5vw,3.8rem); font-weight:700; line-height:1.15; margin-bottom:1.5rem; max-width:900px; }
-.hero > p { font-size:1.1rem; color:var(--muted); max-width:680px; margin-bottom:2.5rem; }
-.hero-btns { display:flex; gap:1rem; flex-wrap:wrap; justify-content:center; }
+/**
+ * MINCE website configuration
+ * ════════════════════════════
+ * Edit THIS file to update papers, team, facilities and stats.
+ * No need to touch any HTML file.
+ */
 
-/* summary cards on home */
-.summary-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1.5rem; }
-.sum-card {
-  background:var(--surface); border:1px solid var(--border); border-radius:12px;
-  padding:1.75rem; display:flex; flex-direction:column; gap:.75rem;
-  transition:border-color .2s, transform .2s; text-decoration:none; color:inherit;
-}
-.sum-card:hover { border-color:var(--accent); transform:translateY(-3px); }
-.sum-card .card-icon { margin-bottom:0; }
-.sum-card h3 { font-size:1rem; font-weight:600; }
-.sum-card p  { font-size:.85rem; color:var(--muted); flex:1; }
-.sum-card .arrow { font-size:.8rem; color:var(--accent); font-weight:600; margin-top:.5rem; }
+const MINCE = {
 
-/* progress */
-.prog-wrap { display:grid; grid-template-columns:1fr 1fr; gap:4rem; align-items:center; }
-.prog-bar-outer { background:rgba(255,255,255,.05); border-radius:999px; height:12px; margin:1rem 0 .5rem; }
-.prog-bar-inner { height:100%; border-radius:999px; background:linear-gradient(90deg,var(--accent),var(--accent2)); width:20.7%; }
-.prog-labels { display:flex; justify-content:space-between; font-size:.8rem; color:var(--muted); }
-.mini-stats { display:flex; gap:.75rem; flex-wrap:wrap; margin-top:1.5rem; }
-.mini-stat {
-  background:var(--surface2); border:1px solid var(--border); border-radius:8px;
-  padding:.75rem 1.25rem;
-}
-.mini-stat-num { font-size:1.3rem; font-weight:700; font-family:'Space Mono',monospace; }
-.mini-stat-num.blue   { color:var(--accent); }
-.mini-stat-num.purple { color:var(--accent2); }
-.mini-stat-num.gold   { color:var(--gold); }
-.mini-stat-label { font-size:.7rem; color:var(--muted); text-transform:uppercase; letter-spacing:.07em; }
+  // ── Project stats ─────────────────────────────────────────────────────────
+  stats: {
+    starsAnalysed:  102,      // current number of analysed stars
+    starsTarget:    1000,     // final catalog goal
+    facilities:     8,        // number of telescopes
+    papers:         4,        // published papers
+  },
 
-.milestone-list { list-style:none; display:flex; flex-direction:column; gap:1rem; }
-.milestone-item { display:flex; align-items:flex-start; gap:.75rem; }
-.milestone-dot { width:10px; height:10px; border-radius:50%; margin-top:.35rem; flex-shrink:0; }
-.dot-done   { background:var(--accent); }
-.dot-active { background:var(--gold); box-shadow:0 0 8px var(--gold); }
-.dot-pending { background:var(--surface2); border:1px solid var(--muted); }
-.milestone-title { font-size:.9rem; font-weight:600; }
-.milestone-desc  { font-size:.8rem; color:var(--muted); }
+  // ── Papers ────────────────────────────────────────────────────────────────
+  // status: "published" | "inprep"
+  papers: [
+    {
+      roman: "I",
+      title: "MINCE. I. Presentation of the project and of the first year sample",
+      authors: "Cescutti G., et al.",
+      journal: "A&A",
+      year: 2022,
+      adsUrl: "https://scixplorer.org/abs/2022A%26A...668A.168C/abstract",   // ← paste ADS link here
+      status: "published",
+    },
+    {
+      roman: "II",
+      title: "MINCE. II. Neutron capture elements",
+      authors: "François, P., et al.",
+      journal: "A&A",
+      year: 2024,
+      adsUrl: "https://scixplorer.org/abs/2024A%26A...686A.295F/abstract",
+      status: "published",
+    },
+    {
+      roman: "III",
+      title: "MINCE: III. Detailed chemical analysis of the UVES sample",
+      authors: "F. Lucertini — et al.",
+      journal: "A&A",
+      year: 2025,
+      adsUrl: "https://scixplorer.org/abs/2025A%26A...695A..36L/abstract",
+      status: "published",
+    },
+    {
+      roman: "IV",
+      title: "MINCE: IV. A detailed analysis of 37 metal-poor and subsolar metallicity stars",
+      authors: "L. Sgatti — et al.",
+      journal: "A&A",
+      year: 2026,
+      adsUrl: "https://scixplorer.org/abs/2026A%26A...714A.370S/abstract",
+      status: "published",
+    },
+    {
+      roman: "V",
+      title: "MINCE V — MIKE observations",
+      authors: "L. Lombardo — et al.",
+      journal: "A&A",
+      year: null,
+      adsUrl: null,
+      status: "inprep",
+    },
+    {
+      roman: "VI",
+      title: "MINCE VI",
+      authors: "A. Schichtel — et al.",
+      journal: "A&A",
+      year: null,
+      adsUrl: null,
+      status: "inprep",
+    },
+  ],
 
-@media (max-width:768px) {
-  .summary-grid { grid-template-columns:1fr; }
-  .prog-wrap { grid-template-columns:1fr; }
-}
-</style>
-</head>
-<body>
-<canvas id="starfield"></canvas>
+  // ── Future work (future.html) ─────────────────────────────────────────────
+  future: {
+    observedToAnalyse: 400,   // stars already observed, not yet analysed
+    approximate:       true,  // shows "~400"
+    // Awarded telescope time. Add one block per allocation.
+    //   status: "ongoing" (data being taken) | "awarded" (not started) | "completed"
+    //   period: e.g. "P116" or "2026A" (optional)     url: programme / proposal page (optional)
+    awardedTime: [
+      { facility: "LBT", telescope: "Large Binocular Telescope", instrument: "PEPSI",
+        hours: 24.5, pi: "L. Sgatti",   period: "", status: "ongoing", url: "" },
+      { facility: "VLT", telescope: "ESO Very Large Telescope",  instrument: "UVES",
+        hours: 197,  pi: "L. Lombardo", period: "", status: "ongoing", url: "" },
+    ],
+  },
 
-<nav>
-  <a href="index.html" class="nav-logo">MINCE</a>
-  <div class="nav-links">
-    <a href="science.html">Science</a>
-    <a href="facilities.html">Facilities</a>
-    <a href="data.html">Data</a>
-    <a href="team.html">Team</a>
-    <a href="papers.html">Papers</a>
-    <a href="observations.html">Observations</a>
-  </div>
-  <div class="nav-right"><a href="data.html" class="btn-sm">Access Data</a></div>
-</nav>
+  // ── Team ──────────────────────────────────────────────────────────────────
+  // Add/remove people freely. 'role' is optional.
+  team: [
+    { name: "Piercarlo Bonifacio",    inst: "Obs. de Paris, France",        role: "PI" },
+    { name: "Gabriele Cescutti",      inst: "INAF Trieste, Italy",           role: "PI" },
+    { name: "Elisabetta Caffau",      inst: "Obs. de Paris, France",         role: "" },
+    { name: "Paolo di Marcantonio",   inst: "INAF Trieste, Italy",           role: "" },
+    { name: "Maria Grazia Franchini",         inst: "INAF Trieste, Italy",           role: "" },
+    { name: "Camilla Juls Hansen",         inst: "INAF Trieste, Italy",           role: "" },
+    { name: "Andreas Korn",         inst: "INAF Trieste, Italy",           role: "" },
+    { name: "Luca Sbordone",         inst: "INAF Trieste, Italy",           role: "" },
+    { name: "Linda Lombardo",         inst: "INAF Trieste, Italy",           role: "" },
+    { name: "Francesca Lucertini",         inst: "INAF Trieste, Italy",           role: "" },
+    { name: "Thanh Chi Nguyen",         inst: "INAF Trieste, Italy",           role: "" },
+    { name: "Lapo Sgatti",         inst: "INAF Trieste, Italy",           role: "" },
+    { name: "The next person could be you ;)",         inst: "INAF Trieste, Italy",           role: "" },
+    // ← add more collaborators here, same format
+  ],
 
-<!-- HERO -->
-<div class="hero">
-  <div class="hero-badge">Legacy spectroscopic survey</div>
-  <h1>Neutron capture elements<br>at <span class="hl">intermediate metallicity</span></h1>
-  <p>The understanding of the physics of the different neutron capture processes (slow, rapid and possibly intermediate) and the comprehension of the Milky Way chemical evolution require precise abundances of n-capture elements in metal-poor stars.  The intermediate metallicity range (−2.5 <[Fe/H]<  −1.5) is particularly interesting because it allows discriminating different models. Surprisingly there are far fewer measurements of n-capture elements abundances in this metallicity range than at lower metallicities. 
-The Measuring at Intermediate metallicity Neutron Capture Elements (MINCE) project aims at filling this gap. 
+  // ── Facilities ────────────────────────────────────────────────────────────
+  // To add a telescope: copy one block and edit it. The page updates by itself.
+  //   aperture : mirror diameter (text shown on the card)
+  //   url      : official website (button under the picture)
+  //   image    : picture file inside  images/facilities/  (.png .jpg .jpeg .webp)
+  //              If omitted, the page looks for  images/facilities/<name>.png|jpg|jpeg|webp
+  //              (name with "/" and spaces turned into "_", accents removed, e.g. MPG_ESO.jpg)
+  //   credit   : image credit shown under the picture (required by most photo licences)
+  facilities: [
+    { name: "TNG",      aperture: "3.58m", spectrograph: "HARPS-N",   resolution: "115,000", location: "La Palma, Spain",
+      url: "https://www.tng.iac.es/",                                          image: "", credit: "" },
+    { name: "CFHT",     aperture: "3.6m",  spectrograph: "ESPaDOnS",  resolution: "68,000",  location: "Mauna Kea, Hawaii",
+      url: "https://www.cfht.hawaii.edu/",                                     image: "", credit: "" },
+    { name: "OHP",      aperture: "1.93m", spectrograph: "SOPHIE",    resolution: "75,000",  location: "Haute-Provence, France",
+      url: "https://ohp.osupytheas.fr/",                                       image: "", credit: "" },
+    { name: "NOT",      aperture: "2.56m", spectrograph: "FIES",      resolution: "67,000",  location: "La Palma, Spain",
+      url: "https://www.not.iac.es/",                                          image: "", credit: "" },
+    { name: "Molėtai",  aperture: "1.65m", spectrograph: "VUES",      resolution: "60,000",  location: "Lithuania",
+      url: "https://mao.tfai.vu.lt/sci/en/",                                   image: "", credit: "" },
+    { name: "VLT",      aperture: "8.2m",  spectrograph: "UVES",      resolution: "110,000", location: "Paranal, Chile",
+      url: "https://www.eso.org/public/teles-instr/paranal-observatory/vlt/",  image: "", credit: "" },
+    { name: "MPG/ESO",  aperture: "2.2m",  spectrograph: "FEROS",     resolution: "48,000",  location: "La Silla, Chile",
+      url: "https://www.eso.org/public/teles-instr/lasilla/mpg22/",            image: "", credit: "" },
+    { name: "Magellan", aperture: "6.5m",  spectrograph: "MIKE",      resolution: "65,000",  location: "Las Campanas, Chile",
+      url: "https://www.lco.cl/magellan-telescopes/",                          image: "", credit: "" },
+  ],
 
-Thanks to several facilities spread all over the world, we will determine precise chemical abundances in metal-poor giants.  The legacy of the MINCE project will be a catalogue of about 1,000 high quality stellar spectra with precise atmospheric parameters and chemical abundances.</p>
-  <div class="hero-btns">
-    <a href="data.html" class="btn-primary">Explore the catalog →</a>
-    <a href="science.html" class="btn-outline">Learn the science</a>
-  </div>
-</div>
-
-<!-- STATS -->
-<div class="stats-bar">
-  <div class="stat-item"><div class="stat-num">102</div><div class="stat-label">Stars analysed</div></div>
-  <div class="stat-item"><div class="stat-num">1,000</div><div class="stat-label">Target catalog size</div></div>
-  <div class="stat-item"><div class="stat-num">8</div><div class="stat-label">Telescope facilities</div></div>
-  <div class="stat-item"><div class="stat-num">5</div><div class="stat-label">Publications</div></div>
-</div>
-
-<!-- ABOUT -->
-<section>
-  <div class="section-inner">
-    <div class="section-tag">What is MINCE</div>
-    <h2>Mapping the heavy elements of the Galaxy</h2>
-    <p class="lead">The <strong style="color:var(--text)">M</strong>easuring at <strong style="color:var(--text)">I</strong>ntermediate metallicity <strong style="color:var(--text)">N</strong>eutron <strong style="color:var(--text)">C</strong>apture <strong style="color:var(--text)">E</strong>lements project aims to fill a critical gap in our understanding of Galactic chemical evolution by providing a homogeneous catalog of ~1,000 metal-poor giants with precise abundances for 30+ elements.</p>
-    <div class="summary-grid">
-      <a href="science.html" class="sum-card">
-        <div class="card-icon">⚛️</div>
-        <h3>Science goals</h3>
-        <p>Disentangle the s-, r- and i-process contributions to heavy element enrichment across −3 &lt; [Fe/H] &lt; −1.</p>
-        <div class="arrow">Read more →</div>
-      </a>
-      <a href="facilities.html" class="sum-card">
-        <div class="card-icon">🔭</div>
-        <h3>Telescope facilities</h3>
-        <p>Eight high-resolution spectrographs (R ≥ 50,000) on telescopes from 1.65m to 8.2m across four continents.</p>
-        <div class="arrow">View facilities →</div>
-      </a>
-      <a href="data.html" class="sum-card">
-        <div class="card-icon">📂</div>
-        <h3>Open data</h3>
-        <p>Catalog of stellar parameters and chemical abundances, plus reduced FITS spectra, all publicly available.</p>
-        <div class="arrow">Access data →</div>
-      </a>
-    </div>
-  </div>
-</section>
-
-<!-- PROGRESS -->
-<section class="alt-bg">
-  <div class="section-inner">
-    <div class="section-tag">Status</div>
-    <div class="prog-wrap">
-      <div>
-        <h2>Project progress</h2>
-        <p class="lead" style="margin-bottom:1.5rem;">102 of the 1,000 target stars have been observed, reduced and analysed.</p>
-        <div class="prog-bar-outer"><div class="prog-bar-inner"></div></div>
-        <div class="prog-labels"><span>102 stars completed</span><span>1,000 goal</span></div>
-        <div class="mini-stats">
-          <div class="mini-stat"><div class="mini-stat-num gold">102</div><div class="mini-stat-label">spectra in archive</div></div>
-          <div class="mini-stat"><div class="mini-stat-num blue">30+</div><div class="mini-stat-label">elements per star</div></div>
-          <div class="mini-stat"><div class="mini-stat-num purple">4</div><div class="mini-stat-label">papers published</div></div>
-        </div>
-      </div>
-      <ul class="milestone-list">
-        <li class="milestone-item"><div class="milestone-dot dot-done"></div><div>
-          <div class="milestone-title">MINCE I — First sample (33 stars)</div>
-          <div class="milestone-desc">Published 2022 · Cescutti et al.</div>
-        </div></li>
-        <li class="milestone-item"><div class="milestone-dot dot-done"></div><div>
-          <div class="milestone-title">MINCE II — Extended analysis of first sample</div>
-          <div class="milestone-desc">Published 2024 · François et al.</div>
-        </div></li>
-        <li class="milestone-item"><div class="milestone-dot dot-active"></div><div>
-          <div class="milestone-title">MINCE III — New 32 stars sample</div>
-          <div class="milestone-desc">Published 2025 · Lucertini et al.</div>
-        </div></li>
-        <li class="milestone-item"><div class="milestone-dot dot-active"></div><div>
-          <div class="milestone-title">MINCE IV — New 37 stars sample</div>
-          <div class="milestone-desc">Published 2026 · Sgatti et al.</div>
-        </div></li>
-        <li class="milestone-item"><div class="milestone-dot dot-active"></div><div>
-          <div class="milestone-title">MINCE V — New 17 stars sample</div>
-          <div class="milestone-desc">in preparation · Lucertini et al.</div>
-        </div></li>
-        <li class="milestone-item"><div class="milestone-dot dot-active"></div><div>
-          <div class="milestone-title">MINCE VI — New stars sample</div>
-          <div class="milestone-desc">in preparation · Schichtel et al.</div>
-        </div></li>
-        <li class="milestone-item"><div class="milestone-dot dot-pending"></div><div>
-          <div class="milestone-title">Final 1,000-star legacy catalog</div>
-          <div class="milestone-desc"></div>
-        </div></li>
-      </ul>
-    </div>
-  </div>
-</section>
-
-<!-- FOOTER -->
-<footer>
-  <strong>MINCE</strong> — Measuring at Intermediate metallicity Neutron Capture Elements<br>
-  PI: Gabriele Cescutti &nbsp;·&nbsp; <a href="mailto:gabriele.cescutti@inaf.it">gabriele.cescutti@inaf.it</a><br>
-  Osservatorio Astronomico di Trieste, INAF · Via G.B. Tiepolo 11, 34131 Trieste, Italy
-</footer>
-
-<script src="nav.js"></script>
-</body>
-</html>
+  // ── GitHub data links ─────────────────────────────────────────────────────
+  // Fill these in once you set up the GitHub repo
+  github: {
+    repoUrl:        "https://github.com/StarCat8/mince-siter",   // main repo
+    releasesUrl:    "https://github.com/YOUR-ORG/mince/releases", // FITS files
+    catalogCsv:     "https://github.com/StarCat8/mince_rep/blob/main/MINCE32.csv",
+    visualizerUrl:  "https://starcat8.github.io/mince_rep/", // existing visualizer
+    spectraUrl:     "https://starcat8.github.io/mince_rep/spectra.html", // spectra archive (browse / plot / download FITS)
+  },
+};
