@@ -94,16 +94,32 @@ const MINCE = {
   ],
 
   // ── Facilities ────────────────────────────────────────────────────────────
-  // aperture: mirror diameter in metres (edit these — the defaults may be wrong!)
+  // To add a telescope: copy one block and edit it. The page updates by itself.
+  //   aperture : mirror diameter (text shown on the card)
+  //   url      : official website (button under the picture)
+  //   image    : picture file inside  images/facilities/  (.png .jpg .jpeg .webp)
+  //              If omitted, the page looks for  images/facilities/<name>.png|jpg|jpeg|webp
+  //              (name with "/" and spaces turned into "_", accents removed, e.g. MPG_ESO.jpg)
+  //   credit   : image credit shown under the picture (required by most photo licences)
   facilities: [
-    { name: "TNG",      aperture: "3.58m", spectrograph: "HARPS-N",   resolution: "115,000", location: "La Palma, Spain" },
-    { name: "CFHT",     aperture: "3.6m",  spectrograph: "ESPaDOnS",  resolution: "68,000",  location: "Mauna Kea, Hawaii" },
-    { name: "OHP",      aperture: "1.93m", spectrograph: "SOPHIE",    resolution: "75,000",  location: "Haute-Provence, France" },
-    { name: "NOT",      aperture: "2.56m", spectrograph: "FIES",      resolution: "67,000",  location: "La Palma, Spain" },
-    { name: "Molėtai",  aperture: "1.65m", spectrograph: "VUES",      resolution: "60,000",  location: "Lithuania" },
-    { name: "VLT",      aperture: "8.2m",  spectrograph: "UVES",      resolution: "110,000", location: "Paranal, Chile" },
-    { name: "MPG/ESO",  aperture: "2.2m",  spectrograph: "FEROS",     resolution: "48,000",  location: "La Silla, Chile" },
-    { name: "Magellan", aperture: "6.5m",  spectrograph: "MIKE",      resolution: "65,000",  location: "Las Campanas, Chile" },
+    { name: "TNG",      aperture: "3.58m", spectrograph: "HARPS-N",   resolution: "115,000", location: "La Palma, Spain",
+      url: "https://www.tng.iac.es/",                                          image: "", credit: "Avet Harutyunyan / TNG" },
+    { name: "CFHT",     aperture: "3.6m",  spectrograph: "ESPaDOnS",  resolution: "68,000",  location: "Mauna Kea, Hawaii",
+      url: "https://www.cfht.hawaii.edu/",                                     image: "", credit: "Webcam image" },
+    { name: "OHP",      aperture: "1.93m", spectrograph: "SOPHIE",    resolution: "75,000",  location: "Haute-Provence, France",
+      url: "https://ohp.osupytheas.fr/",                                       image: "", credit: "" },
+    { name: "NOT",      aperture: "2.56m", spectrograph: "FIES",      resolution: "67,000",  location: "La Palma, Spain",
+      url: "https://www.not.iac.es/",                                          image: "", credit: "Ruslan Merzlyakov" },
+    { name: "Molėtai",  aperture: "1.65m", spectrograph: "VUES",      resolution: "60,000",  location: "Lithuania",
+      url: "https://mao.tfai.vu.lt/sci/en/",                                   image: "", credit: "By MindaugasMacijauskas at English Wikipedia - Author: Mindaugas Macijauskas, Public Domain, https://commons.wikimedia.org/wiki/Special:Redirect/page/5059295" },
+    { name: "VLT",      aperture: "8.2m",  spectrograph: "UVES",      resolution: "110,000", location: "Paranal, Chile",
+      url: "https://www.eso.org/public/teles-instr/paranal-observatory/vlt/",  image: "", credit: "By ESO/G. Hüdepohl (atacamaphoto.com), CC BY 4.0, https://commons.wikimedia.org/wiki/Special:Redirect/page/106165664" },
+    { name: "MPG/ESO",  aperture: "2.2m",  spectrograph: "FEROS",     resolution: "48,000",  location: "La Silla, Chile",
+      url: "https://www.eso.org/public/teles-instr/lasilla/mpg22/",            image: "", credit: "By Credit: ESO/H.H.Heyer - https://www.eso.org/public/images/esopia00046teles/http://www.eso.org/public/archives/images/original/esopia00046teles.jpg, CC BY 3.0, https://commons.wikimedia.org/wiki/Special:Redirect/page/12117220" },
+    { name: "Magellan", aperture: "6.5m",  spectrograph: "MIKE",      resolution: "65,000",  location: "Las Campanas, Chile",
+      url: "https://www.lco.cl/magellan-telescopes/",                          image: "", credit: "By Jan Skowron - Own work, CC BY-SA 3.0, https://commons.wikimedia.org/wiki/Special:Redirect/page/32278583" },
+    { name: "Large Binocular Telescope", aperture: "11.8m (effective)",  spectrograph: "PEPSI",      resolution: "130,000",  location: "Arizona, USA",
+      url: "https://www.lbto.org/",                          image: "", credit: "By Mohamed Osama AlNagdy, 2010-12-13 - de:File:LargeBinoTelescope_NASA.jpg, auf etwa 40% beschnitten, Copyrighted free use, https://commons.wikimedia.org/wiki/Special:Redirect/page/32980017" },
   ],
 
   // ── GitHub data links ─────────────────────────────────────────────────────

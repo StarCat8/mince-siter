@@ -15,6 +15,39 @@
   align-items:start; transition:border-color .2s;
 }
 .fac-card:hover { border-color:var(--accent2); }
+.fac-card { cursor:pointer; position:relative; }
+.fac-card:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+.fac-more {
+  position:absolute; top:1rem; right:1.1rem; font-size:.72rem; font-weight:600;
+  color:var(--muted); transition:color .2s;
+}
+.fac-card:hover .fac-more { color:var(--accent2); }
+
+/* ── lightbox ── */
+.lb { position:fixed; inset:0; z-index:500; background:rgba(3,6,14,.86); backdrop-filter:blur(6px);
+  display:none; align-items:center; justify-content:center; padding:2rem; }
+.lb.open { display:flex; }
+.lb-box { position:relative; max-width:min(1100px,94vw); max-height:92vh; display:flex; flex-direction:column;
+  background:var(--surface); border:1px solid var(--border); border-radius:14px; overflow:hidden; }
+.lb-img-wrap { position:relative; background:#02040a; display:flex; align-items:center; justify-content:center;
+  min-width:min(560px,90vw); min-height:260px; }
+.lb-img-wrap img { display:block; max-width:100%; max-height:68vh; object-fit:contain; }
+.lb-missing { color:var(--muted); font-size:.85rem; padding:3rem 2rem; text-align:center; line-height:1.7; }
+.lb-missing code { color:var(--accent); font-family:'Space Mono',monospace; }
+.lb-credit { position:absolute; right:.6rem; bottom:.4rem; font-size:.68rem; color:rgba(255,255,255,.6);
+  background:rgba(0,0,0,.45); padding:.1rem .45rem; border-radius:4px; }
+.lb-info { display:flex; align-items:center; gap:1.5rem; padding:1.1rem 1.4rem; flex-wrap:wrap; }
+.lb-title { font-size:1.15rem; font-weight:700; }
+.lb-sub { font-size:.82rem; color:var(--muted); }
+.lb-sub b { color:var(--accent); font-weight:600; }
+.lb-info .btn-primary { margin-left:auto; }
+.lb-close, .lb-nav { position:absolute; background:rgba(0,0,0,.5); border:1px solid var(--border); color:#fff;
+  border-radius:50%; width:38px; height:38px; cursor:pointer; font-size:1rem; display:flex; align-items:center;
+  justify-content:center; transition:background .2s; z-index:2; }
+.lb-close:hover, .lb-nav:hover { background:rgba(79,158,255,.35); }
+.lb-close { top:.7rem; right:.7rem; }
+.lb-nav { top:calc(34vh - 19px); }
+.lb-prev { left:.7rem; } .lb-next { right:.7rem; }
 .fac-aperture {
   font-family:'Space Mono',monospace; font-size:1.6rem; font-weight:700;
   color:var(--gold); text-align:center; min-width:70px; padding-top:.25rem;
@@ -56,13 +89,14 @@
 
 <div class="page-header">
   <div class="section-tag">Instrumentation</div>
-  <h1>Eight world-class<br><span class="hl">telescope facilities</span></h1>
+  <h1><span id="fac-count">Eight</span> world-class<br><span class="hl">telescope facilities</span></h1>
   <p>MINCE observations use high-resolution echelle spectrographs mounted on telescopes across Europe, the Americas and beyond, covering both hemispheres.</p>
 </div>
 
 <section>
   <div class="section-inner">
     <div id="fac-grid"><!-- filled by JS --></div>
+    <p style="font-size:.8rem;color:var(--muted);margin-top:1rem;">Click on a facility to see a picture and the link to its official website.</p>
     <div class="note-box">
       <strong>Aperture sizes</strong> listed above are taken from <code>config.js</code> — edit that file to correct them.
       All instruments deliver R ≥ 50,000 with S/N ≥ 100 at 5000 Å per pixel.
@@ -97,6 +131,24 @@
   </div>
 </section>
 
+<!-- LIGHTBOX -->
+<div class="lb" id="lb" role="dialog" aria-modal="true" aria-labelledby="lb-title">
+  <div class="lb-box">
+    <button class="lb-close" id="lb-close" aria-label="Close">✕</button>
+    <div class="lb-img-wrap" id="lb-img-wrap">
+      <button class="lb-nav lb-prev" id="lb-prev" aria-label="Previous">‹</button>
+      <button class="lb-nav lb-next" id="lb-next" aria-label="Next">›</button>
+    </div>
+    <div class="lb-info">
+      <div>
+        <div class="lb-title" id="lb-title"></div>
+        <div class="lb-sub" id="lb-sub"></div>
+      </div>
+      <a class="btn-primary" id="lb-link" href="#" target="_blank" rel="noopener">Official website ↗</a>
+    </div>
+  </div>
+</div>
+
 <footer>
   <strong>MINCE</strong> — Measuring at Intermediate metallicity Neutron Capture Elements<br>
   PI: Gabriele Cescutti &nbsp;·&nbsp; <a href="mailto:gabriele.cescutti@inaf.it">gabriele.cescutti@inaf.it</a><br>
@@ -106,18 +158,93 @@
 <script src="config.js"></script>
 <script src="nav.js"></script>
 <script>
-// Render facilities from config.js
-const grid = document.getElementById('fac-grid');
-MINCE.facilities.forEach(f => {
-  grid.innerHTML += `
-  <div class="fac-card">
-    <div class="fac-aperture">${f.aperture}</div>
+// ── Facilities: everything comes from MINCE.facilities in config.js ─────────
+const IMG_DIR = 'images/facilities/';
+const IMG_EXT = ['jpg', 'jpeg', 'png', 'webp'];
+const FAC = MINCE.facilities;
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+// "MPG/ESO" -> "MPG_ESO", "Molėtai" -> "Moletai"
+const slug = n => n.normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^A-Za-z0-9.-]+/g, '_').replace(/^_|_$/g, '');
+
+function imageCandidates(f) {
+  if (f.image) return [f.image.includes('/') ? f.image : IMG_DIR + f.image];
+  const names = [...new Set([slug(f.name), slug(f.name).toLowerCase()])];
+  return names.flatMap(n => IMG_EXT.map(e => IMG_DIR + n + '.' + e));
+}
+
+// headline count
+const WORDS = ['Zero','One','Two','Three','Four','Five','Six','Seven','Eight','Nine','Ten','Eleven','Twelve'];
+document.getElementById('fac-count').textContent = WORDS[FAC.length] || FAC.length;
+
+// cards
+document.getElementById('fac-grid').innerHTML = FAC.map((f, i) => `
+  <div class="fac-card" tabindex="0" role="button" data-i="${i}" aria-label="${esc(f.name)}: picture and website">
+    <span class="fac-more">View ↗</span>
+    <div class="fac-aperture">${esc(f.aperture)}</div>
     <div>
-      <div class="fac-name">${f.name}</div>
-      <div class="fac-spec">${f.spectrograph} &nbsp;·&nbsp; R = ${f.resolution}</div>
-      <div class="fac-loc">📍 ${f.location}</div>
+      <div class="fac-name">${esc(f.name)}</div>
+      <div class="fac-spec">${esc(f.spectrograph)} &nbsp;·&nbsp; R = ${esc(f.resolution)}</div>
+      <div class="fac-loc">📍 ${esc(f.location)}</div>
     </div>
-  </div>`;
+  </div>`).join('');
+
+// lightbox
+const lb = document.getElementById('lb'), wrap = document.getElementById('lb-img-wrap');
+let cur = -1, lastFocus = null;
+
+function loadFirst(urls, onOk, onFail, k = 0) {
+  if (k >= urls.length) return onFail();
+  const img = new Image();
+  img.onload = () => onOk(img);
+  img.onerror = () => loadFirst(urls, onOk, onFail, k + 1);
+  img.src = encodeURI(urls[k]);
+}
+
+function openFac(i) {
+  cur = (i + FAC.length) % FAC.length;
+  const f = FAC[cur];
+  document.getElementById('lb-title').textContent = f.name + (f.aperture ? ' · ' + f.aperture : '');
+  document.getElementById('lb-sub').innerHTML =
+    `<b>${esc(f.spectrograph)}</b> · R = ${esc(f.resolution)} · 📍 ${esc(f.location)}`;
+  const link = document.getElementById('lb-link');
+  link.style.display = f.url ? '' : 'none';
+  link.href = f.url || '#';
+  wrap.querySelectorAll('img,.lb-missing,.lb-credit').forEach(e => e.remove());
+  wrap.insertAdjacentHTML('beforeend', '<div class="lb-missing">Loading…</div>');
+  const shown = cur;
+  const cands = imageCandidates(f);
+  loadFirst(cands, img => {
+    if (shown !== cur) return;
+    wrap.querySelector('.lb-missing')?.remove();
+    img.alt = f.name + ' telescope';
+    wrap.appendChild(img);
+    if (f.credit) wrap.insertAdjacentHTML('beforeend', `<span class="lb-credit">© ${esc(f.credit)}</span>`);
+  }, () => {
+    if (shown !== cur) return;
+    wrap.querySelector('.lb-missing').innerHTML =
+      `No picture yet for <b>${esc(f.name)}</b>.<br>Add <code>${esc(cands[0])}</code> to the repository.`;
+  });
+  if (!lb.classList.contains('open')) { lastFocus = document.activeElement; lb.classList.add('open'); }
+  document.getElementById('lb-close').focus();
+}
+function closeFac() { lb.classList.remove('open'); cur = -1; if (lastFocus) lastFocus.focus(); }
+
+const grid = document.getElementById('fac-grid');
+grid.addEventListener('click', e => { const c = e.target.closest('.fac-card'); if (c) openFac(+c.dataset.i); });
+grid.addEventListener('keydown', e => {
+  const c = e.target.closest('.fac-card');
+  if (c && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); openFac(+c.dataset.i); }
+});
+document.getElementById('lb-close').onclick = closeFac;
+document.getElementById('lb-prev').onclick = () => openFac(cur - 1);
+document.getElementById('lb-next').onclick = () => openFac(cur + 1);
+lb.addEventListener('click', e => { if (e.target === lb) closeFac(); });
+document.addEventListener('keydown', e => {
+  if (!lb.classList.contains('open')) return;
+  if (e.key === 'Escape') closeFac();
+  else if (e.key === 'ArrowLeft') openFac(cur - 1);
+  else if (e.key === 'ArrowRight') openFac(cur + 1);
 });
 </script>
 </body>
