@@ -16,14 +16,14 @@
 }
 .process-card.r-proc::before { background:linear-gradient(90deg,#f56742,#f5a042); }
 .process-card.s-proc::before { background:linear-gradient(90deg,var(--accent),#42a5f5); }
-.process-card.i-proc::before { background:linear-gradient(90deg,var(--accent2),#f542d4); }
+
 .process-label {
   font-family:'Space Mono',monospace; font-size:.7rem; font-weight:700;
   letter-spacing:.12em; text-transform:uppercase; margin-bottom:.6rem;
 }
 .r-proc .process-label { color:#f56742; }
 .s-proc .process-label { color:var(--accent); }
-.i-proc .process-label { color:var(--accent2); }
+
 .process-card h3 { font-size:1.05rem; font-weight:600; margin-bottom:.6rem; }
 .process-card p  { font-size:.875rem; color:var(--muted); line-height:1.7; }
 
@@ -60,7 +60,28 @@
 .el-fe  { background:rgba(245,200,66,.1);  border:1px solid rgba(245,200,66,.25);  color:var(--gold); }
 .el-s   { background:rgba(79,158,255,.1);  border:1px solid rgba(79,158,255,.25);  color:var(--accent); }
 .el-r   { background:rgba(245,87,66,.1);   border:1px solid rgba(245,87,66,.25);   color:#f56742; }
-.el-i   { background:rgba(192,132,252,.1); border:1px solid rgba(192,132,252,.25); color:var(--accent2); }
+
+
+
+.science-card { cursor:pointer; text-align:left; width:100%; color:inherit; font:inherit; }
+.science-card:focus-visible { outline:2px solid var(--accent); outline-offset:4px; }
+.references-modal {
+  display:none; position:fixed; inset:0; z-index:1000; padding:1.5rem;
+  background:rgba(0,0,0,.72); align-items:center; justify-content:center;
+}
+.references-modal.open { display:flex; }
+.references-modal-content {
+  position:relative; width:min(620px,100%); max-height:80vh; overflow:auto;
+  background:var(--surface); border:1px solid var(--border); border-radius:12px;
+  padding:2rem; box-shadow:0 20px 60px rgba(0,0,0,.35);
+}
+.references-modal-content h3 { margin:0 2rem 1rem 0; font-size:1.1rem; }
+.references-modal-content ul { margin:0; padding-left:1.2rem; }
+.references-modal-content li { color:var(--muted); font-size:.85rem; line-height:1.65; margin:.65rem 0; }
+.references-modal-close {
+  position:absolute; top:.8rem; right:1rem; border:0; background:transparent;
+  color:var(--muted); font-size:1.6rem; cursor:pointer;
+}
 
 @media (max-width:768px) {
   .process-grid  { grid-template-columns:1fr; }
@@ -90,30 +111,67 @@
   <p>Elements heavier than iron cannot be forged in ordinary stellar burning. They require an intense flux of neutrons — and their abundances encode the history of some of the most extreme events in the universe.</p>
 </div>
 
-<!-- THE THREE PROCESSES -->
+<!-- SCIENCE THEMES -->
 <section>
   <div class="section-inner">
-    <div class="section-tag">The three channels</div>
-    <h2>s, r, and i — three neutron capture processes</h2>
-    <p class="lead">Heavy elements from strontium (Z=38) to uranium (Z=92) are produced via neutron capture onto seed nuclei. The neutron density determines which of three regimes applies.</p>
+    <div class="section-tag">Scientific context</div>
+    <h2>Key science themes in MINCE</h2>
+    <p class="lead">The MINCE abundance measurements connect neutron-capture nucleosynthesis with stellar evolution, Galactic chemical evolution, and the assembly history of the Milky Way. Select a topic to explore its key references.</p>
     <div class="process-grid">
-      <div class="process-card r-proc">
-        <div class="process-label">r-process · rapid</div>
-        <h3>Neutron star mergers &amp; rare CCSNe</h3>
-        <p>At neutron densities n<sub>n</sub> ≫ 10²⁰ cm⁻³, the rapid process builds nuclei far from stability. The 2017 kilonova GW170817 confirmed NSMs as a major r-process site. Europium (Eu) is its best tracer.</p>
-      </div>
-      <div class="process-card s-proc">
-        <div class="process-label">s-process · slow</div>
-        <h3>AGB stars</h3>
-        <p>At low neutron densities (n<sub>n</sub> ~ 10⁷ cm⁻³), captures proceed near the valley of stability. AGB stars are the dominant site. At low metallicity [Fe/H] &lt; −1.5, their contribution is minimal. Barium (Ba) is a key tracer.</p>
-      </div>
-      <div class="process-card i-proc">
-        <div class="process-label">i-process · intermediate</div>
-        <h3>Super-AGB &amp; rapidly accreting WDs</h3>
-        <p>At intermediate densities (10¹³–10¹⁵ cm⁻³), the i-process may explain the abundance patterns of CEMP-s/r stars and certain metal-poor giants that cannot be reproduced by s or r alone.</p>
-      </div>
+      <button type="button" class="process-card s-proc science-card" data-title="AGB stars and the s-process" data-references=["Cristallo, S., Piersanti, L., Straniero, O., et al. 2011, ApJS, 197, 17","Frischknecht, U., Hirschi, R., Pignatari, M., et al. 2016, MNRAS, 456, 1803"]>
+        <div class="process-label">s-process · slow neutron capture</div>
+        <h3>AGB stars and the s-process</h3>
+        <p>Low- and intermediate-mass stars on the asymptotic giant branch are a major source of s-process elements. Their stellar models predict the production of elements such as Sr, Y, Zr, Ba and La, whose abundance patterns can be tested across metallicity.</p>
+      </button>
+      <button type="button" class="process-card r-proc science-card" data-title="The r-process and its astrophysical sites" data-references=["Nishimura, N., Takiwaki, T., & Thielemann, F.-K. 2015, ApJ, 810, 109","Seitenzahl, I. R., Cescutti, G., Röpke, F. K., Ruiter, A. J., & Pakmor, A. 2013, A&A, 559, L5"]>
+        <div class="process-label">r-process · rapid neutron capture</div>
+        <h3>The r-process and its astrophysical sites</h3>
+        <p>Rapid neutron capture produces many of the heaviest elements. Rare explosive environments, including neutron-star mergers and magnetorotational core-collapse supernovae, are investigated as possible sources of the Galactic r-process inventory.</p>
+      </button>
+      <button type="button" class="process-card r-proc science-card" data-title="Core-collapse supernovae and stellar yields" data-references=["Woosley, S. E., & Weaver, T. A. 1995, ApJS, 101, 181","Limongi, M., & Chieffi, A. 2018, ApJS, 237, 13","Timmes, F. X., Woosley, S. E., & Weaver, T. A. 1995, ApJS, 98, 617"]>
+        <div class="process-label">Stellar nucleosynthesis</div>
+        <h3>Core-collapse supernovae and stellar yields</h3>
+        <p>Massive stars and their explosions contribute to the chemical enrichment of galaxies. Predicted stellar yields provide the link between nucleosynthesis calculations and the elemental abundance patterns observed in metal-poor stars.</p>
+      </button>
+      <button type="button" class="process-card s-proc science-card" data-title="Galactic chemical evolution" data-references=["Burbidge, E. M., Burbidge, G. R., Fowler, W. A., & Hoyle, F. 1957, Rev. Mod. Phys., 29, 547","François, P., Matteucci, F., Cayrel, R., et al. 2004, A&A, 421, 613","Schönrich, R., Binney, J., & Dehnen, W. 2010, MNRAS, 403, 1829"]>
+        <div class="process-label">Chemical evolution</div>
+        <h3>Galactic chemical evolution</h3>
+        <p>Abundance trends and scatter record the integrated effects of stellar populations, gas flows, and enrichment timescales. Chemical-evolution models use these observables to constrain how the Milky Way built up its elements.</p>
+      </button>
+      <button type="button" class="process-card r-proc science-card" data-title="The metal-poor halo and accretion history" data-references=["Helmi, A., Babusiaux, C., Koppelman, H. H., et al. 2018, Nature, 563, 85","Belokurov, V., Erkal, D., Evans, N. W., Koposov, S. E., & Deason, A. J. 2018, MNRAS, 478, 611","Myeong, G. C., Vasiliev, E., Iorio, G., Evans, N. W., & Belokurov, V. 2019, MNRAS, 488, 1235"]>
+        <div class="process-label">Milky Way assembly</div>
+        <h3>The metal-poor halo and accretion history</h3>
+        <p>The halo preserves evidence of past mergers and accreted stellar systems. Combining chemical abundances with stellar motions helps distinguish Galactic components and identify debris from ancient accretion events.</p>
+      </button>
+      <button type="button" class="process-card s-proc science-card" data-title="Stellar populations in the Milky Way" data-references=["Bensby, T., Feltzing, S., & Oey, M. S. 2014, A&A, 562, A71","Haywood, M., Di Matteo, P., Lehnert, M. D., et al. 2018, ApJ, 863, 113"]>
+        <div class="process-label">Stellar populations</div>
+        <h3>Stellar populations in the Milky Way</h3>
+        <p>High-resolution abundances help characterize the thin disc, thick disc, and halo. Their chemical signatures provide an independent dimension for studying the formation and evolution of Galactic populations.</p>
+      </button>
+      <button type="button" class="process-card r-proc science-card" data-title="Neutron-capture abundances in metal-poor stars" data-references=["Cayrel, R., Depagne, E., Spite, M., et al. 2004, A&A, 416, 1117","François, P., Depagne, E., Hill, V., et al. 2007, A&A, 476, 935","Caffau, E., Bonifacio, P., François, P., et al. 2011, Nature, 477, 67"]>
+        <div class="process-label">Observational benchmarks</div>
+        <h3>Neutron-capture abundances in metal-poor stars</h3>
+        <p>Abundance measurements in very metal-poor stars reveal large star-to-star variations and constrain the earliest enrichment events. Homogeneous analyses over a wider metallicity range extend these observational benchmarks.</p>
+      </button>
+      <button type="button" class="process-card s-proc science-card" data-title="Astrometry and Galactic dynamics" data-references=["Lindegren, L., Bastian, U., Biermann, M., et al. 2021, A&A, 649, A4","Bovy, J. 2015, ApJS, 216, 29"]>
+        <div class="process-label">Astrometry &amp; dynamics</div>
+        <h3>Astrometry and Galactic dynamics</h3>
+        <p>Gaia astrometry enables precise positions, parallaxes, and proper motions for large stellar samples. Together with dynamical models, these data place chemical abundances in the context of Galactic orbits and populations.</p>
+      </button>
+      <button type="button" class="process-card s-proc science-card" data-title="Interstellar extinction and stellar parameters" data-references=["Schlafly, E. F., & Finkbeiner, D. P. 2011, ApJ, 737, 103"]>
+        <div class="process-label">Stellar parameters</div>
+        <h3>Interstellar extinction and stellar parameters</h3>
+        <p>Reliable stellar parameters from photometry require an accurate treatment of interstellar reddening and extinction. Dust maps provide an essential reference for interpreting observed colours and deriving intrinsic stellar properties.</p>
+      </button>
     </div>
 
+    <div class="references-modal" id="referencesModal" role="dialog" aria-modal="true" aria-labelledby="referencesModalTitle">
+      <div class="references-modal-content">
+        <button type="button" class="references-modal-close" aria-label="Close">&times;</button>
+        <h3 id="referencesModalTitle">References</h3>
+        <ul id="referencesModalList"></ul>
+      </div>
+    </div>
     <!-- Elements measured -->
     <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.75rem;">
       <div class="section-tag" style="margin-bottom:1rem;">Elements measured in MINCE stars</div>
@@ -165,8 +223,8 @@
         <p>AGB stars have a minimum metallicity threshold. The [Ba/Eu] ratio tracks the s/r balance — MINCE provides the statistical power to map its evolution precisely.</p>
       </div></li>
       <li><div>
-        <strong>What is the frequency and abundance signature of i-process events?</strong>
-        <p>Specific [La/Eu], [Ba/Sr] patterns distinguish the i-process from mixed s+r. A sample of 1,000 stars allows a statistical determination of its occurrence rate.</p>
+        <strong>How do neutron-capture abundances vary across Galactic populations?</strong>
+        <p>Comparing abundance patterns across the disc and halo helps connect nucleosynthetic enrichment to the assembly and evolution of the Milky Way.</p>
       </div></li>
       <li><div>
         <strong>How did the Milky Way assemble its metal-poor halo?</strong>
@@ -254,8 +312,8 @@
               <span style="color:var(--muted)">light/heavy s-process</span>
             </div>
             <div style="display:flex;justify-content:space-between;">
-              <span style="font-family:'Space Mono',monospace;color:var(--accent)">[La/Eu]</span>
-              <span style="color:var(--muted)">i-process tracer</span>
+              <span style="font-family:'Space Mono',monospace;color:var(--accent)">[Ba/Sr]</span>
+              <span style="color:var(--muted)">heavy/light s-process</span>
             </div>
           </div>
         </div>
@@ -269,6 +327,37 @@
   PI: Gabriele Cescutti &nbsp;·&nbsp; <a href="mailto:gabriele.cescutti@inaf.it">gabriele.cescutti@inaf.it</a><br>
   Osservatorio Astronomico di Trieste, INAF · Via G.B. Tiepolo 11, 34131 Trieste, Italy
 </footer>
+<script>
+(() => {
+  const modal = document.getElementById('referencesModal');
+  const title = document.getElementById('referencesModalTitle');
+  const list = document.getElementById('referencesModalList');
+  const closeButton = modal.querySelector('.references-modal-close');
+
+  document.querySelectorAll('.science-card').forEach(card => {
+    card.addEventListener('click', () => {
+      title.textContent = card.dataset.title;
+      list.replaceChildren();
+      JSON.parse(card.dataset.references).forEach(reference => {
+        const item = document.createElement('li');
+        item.textContent = reference;
+        list.appendChild(item);
+      });
+      modal.classList.add('open');
+      closeButton.focus();
+    });
+  });
+
+  const closeModal = () => modal.classList.remove('open');
+  closeButton.addEventListener('click', closeModal);
+  modal.addEventListener('click', event => {
+    if (event.target === modal) closeModal();
+  });
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape' && modal.classList.contains('open')) closeModal();
+  });
+})();
+</script>
 <script src="config.js"></script><script src="nav.js"></script>
 </body>
 </html>
