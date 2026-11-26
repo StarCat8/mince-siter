@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Future work — MINCE</title>
+<link rel="stylesheet" href="style.css">
+<style>
+/* ── catalog growth bar ── */
+.growth {
+  background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:2rem;
+}
+.growth-head { display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap; gap:.5rem; margin-bottom:1.25rem; }
+.growth-head h3 { font-size:1.05rem; font-weight:600; }
+.growth-head span { font-size:.8rem; color:var(--muted); }
+.gbar { display:flex; height:34px; border-radius:8px; overflow:hidden; background:rgba(255,255,255,.04);
+  border:1px solid var(--border); }
+.gseg { height:100%; display:flex; align-items:center; justify-content:center; font-family:'Space Mono',monospace;
+  font-size:.75rem; font-weight:700; color:#fff; white-space:nowrap; overflow:hidden; min-width:0; transition:filter .2s; }
+.gseg:hover { filter:brightness(1.15); }
+.gseg.done   { background:linear-gradient(90deg,var(--accent),#6aa8ff); }
+.gseg.queue  { background:linear-gradient(90deg,var(--accent2),#d4a8ff); }
+.gseg.taking { background:repeating-linear-gradient(135deg,rgba(245,200,66,.55) 0 8px,rgba(245,200,66,.25) 8px 16px);
+  color:#1a1300; }
+.gscale { display:flex; justify-content:space-between; font-size:.72rem; color:var(--muted); margin-top:.45rem;
+  font-family:'Space Mono',monospace; }
+.glegend { display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; margin-top:1.5rem; }
+.gl { display:flex; gap:.75rem; align-items:flex-start; }
+.gl .sw { width:14px; height:14px; border-radius:3px; margin-top:.2rem; flex-shrink:0; }
+.gl .n { font-family:'Space Mono',monospace; font-size:1.25rem; font-weight:700; line-height:1.2; }
+.gl .t { font-size:.8rem; color:var(--muted); line-height:1.5; }
+
+/* ── awarded time ── */
+#time-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:1.25rem; }
+.tcard {
+  background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:1.5rem 1.6rem;
+  display:flex; flex-direction:column; gap:.9rem; position:relative; overflow:hidden; transition:border-color .2s;
+}
+.tcard:hover { border-color:var(--accent); }
+.tcard::before { content:''; position:absolute; top:0; left:0; right:0; height:3px;
+  background:linear-gradient(90deg,var(--gold),#f59e42); }
+.tcard-top { display:flex; justify-content:space-between; align-items:flex-start; gap:1rem; }
+.thours { font-family:'Space Mono',monospace; font-size:2.1rem; font-weight:700; line-height:1; color:var(--gold); }
+.thours small { font-size:.9rem; color:var(--muted); font-weight:400; margin-left:.2rem; }
+.tfac { font-size:1.05rem; font-weight:700; }
+.tinst { font-size:.85rem; color:var(--accent); font-weight:600; }
+.tmeta { font-size:.8rem; color:var(--muted); display:flex; flex-direction:column; gap:.25rem; }
+.tmeta b { color:var(--text); font-weight:600; }
+.status { font-size:.68rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase;
+  padding:.22rem .6rem; border-radius:20px; white-space:nowrap; display:inline-flex; align-items:center; gap:.35rem; }
+.status.ongoing   { background:rgba(245,200,66,.1); border:1px solid rgba(245,200,66,.3); color:var(--gold); }
+.status.awarded   { background:rgba(79,158,255,.1); border:1px solid rgba(79,158,255,.3); color:var(--accent); }
+.status.completed { background:rgba(66,245,135,.08); border:1px solid rgba(66,245,135,.3); color:#42f587; }
+.status.ongoing::before { content:''; width:6px; height:6px; border-radius:50%; background:var(--gold);
+  box-shadow:0 0 6px var(--gold); animation:pulse 1.6s ease-in-out infinite; }
+@keyframes pulse { 50% { opacity:.3; } }
+.ttotal { margin-top:1.25rem; font-size:.85rem; color:var(--muted); }
+.ttotal b { color:var(--gold); font-family:'Space Mono',monospace; }
+
+/* ── papers in preparation ── */
+#prep-list { display:flex; flex-direction:column; gap:1rem; }
+.pcard { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:1.4rem 1.6rem;
+  display:flex; align-items:center; gap:1.5rem; }
+.proman { font-family:'Space Mono',monospace; font-size:1rem; font-weight:700; color:var(--accent2); min-width:62px;
+  text-align:center; background:rgba(192,132,252,.08); border:1px solid rgba(192,132,252,.22);
+  border-radius:8px; padding:.4rem .5rem; line-height:1.3; }
+.pbody { flex:1; }
+.ptitle { font-size:.95rem; font-weight:600; margin-bottom:.25rem; }
+.pauth { font-size:.8rem; color:var(--muted); }
+
+.cta { background:linear-gradient(135deg,rgba(79,158,255,.08),rgba(192,132,252,.08));
+  border:1px solid var(--border); border-radius:14px; padding:2rem; display:flex; align-items:center;
+  gap:2rem; flex-wrap:wrap; }
+.cta p { color:var(--muted); font-size:.92rem; flex:1; min-width:260px; }
+.cta strong { color:var(--text); }
+
+@media (max-width:768px) {
+  .glegend { grid-template-columns:1fr; }
+  .pcard { flex-direction:column; align-items:flex-start; }
+}
+</style>
+</head>
+<body>
+<canvas id="starfield"></canvas>
+
+<nav>
+  <a href="index.html" class="nav-logo">MINCE</a>
+  <div class="nav-links">
+    <a href="science.html">Science</a>
+    <a href="facilities.html">Facilities</a>
+    <a href="data.html">Data</a>
+    <a href="team.html">Team</a>
+    <a href="papers.html">Papers</a>
+    <a href="future.html">Future work</a>
+  </div>
+  <div class="nav-right"><a href="data.html" class="btn-sm">Access Data</a></div>
+</nav>
+
+<div class="page-header">
+  <div class="section-tag">Roadmap</div>
+  <h1>Ongoing &amp;<br><span class="hl">future work</span></h1>
+  <p>MINCE keeps growing: new telescope time, hundreds of observed stars waiting for analysis, and new papers on the way towards the final catalog.</p>
+</div>
+
+<!-- KEY NUMBERS -->
+<div class="stats-bar">
+  <div class="stat-item"><div class="stat-num" id="n-done">—</div><div class="stat-label">Stars analysed</div></div>
+  <div class="stat-item"><div class="stat-num" id="n-queue">—</div><div class="stat-label">Observed, to be analysed</div></div>
+  <div class="stat-item"><div class="stat-num" id="n-hours">—</div><div class="stat-label">Hours of awarded time</div></div>
+  <div class="stat-item"><div class="stat-num" id="n-prep">—</div><div class="stat-label">Papers in preparation</div></div>
+</div>
+
+<!-- CATALOG GROWTH -->
+<section>
+  <div class="section-inner">
+    <div class="section-tag">Catalog status</div>
+    <h2>Towards the final catalog</h2>
+    <p class="lead">Where each star of the MINCE sample stands today, compared with the goal of the legacy catalog.</p>
+    <div class="growth">
+      <div class="growth-head">
+        <h3>MINCE sample</h3>
+        <span id="g-goal"></span>
+      </div>
+      <div class="gbar" id="gbar"></div>
+      <div class="gscale"><span>0</span><span id="g-max"></span></div>
+      <div class="glegend" id="glegend"></div>
+    </div>
+  </div>
+</section>
+
+<!-- AWARDED TIME -->
+<section class="alt-bg">
+  <div class="section-inner">
+    <div class="section-tag">Telescope time</div>
+    <h2>Awarded observing time</h2>
+    <p class="lead">Programmes currently awarded to MINCE. Observations marked <em>ongoing</em> are being collected now; their stars are not yet counted above.</p>
+    <div id="time-grid"></div>
+    <div class="ttotal" id="ttotal"></div>
+  </div>
+</section>
+
+<!-- PAPERS IN PREPARATION -->
+<section>
+  <div class="section-inner">
+    <div class="section-tag">Publications</div>
+    <h2>Papers in preparation</h2>
+    <p class="lead">The next papers of the series. Published ones are listed on the <a href="papers.html" style="color:var(--accent)">Papers</a> page.</p>
+    <div id="prep-list"></div>
+
+    <div class="cta" style="margin-top:3rem;">
+      <p><strong>Interested in MINCE?</strong> We welcome collaborations on observations, analysis and modelling.
+        Get in touch with the PI.</p>
+      <a class="btn-primary" href="mailto:gabriele.cescutti@inaf.it">Contact us →</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <strong>MINCE</strong> — Measuring at Intermediate metallicity Neutron Capture Elements<br>
+  PI: Gabriele Cescutti &nbsp;·&nbsp; <a href="mailto:gabriele.cescutti@inaf.it">gabriele.cescutti@inaf.it</a><br>
+  Osservatorio Astronomico di Trieste, INAF · Via G.B. Tiepolo 11, 34131 Trieste, Italy
+</footer>
+
+<script src="config.js"></script>
+<script src="nav.js"></script>
+<script>
+// Everything on this page comes from config.js (stats, future, papers)
+(() => {
+  const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const fmt = n => Number(n).toLocaleString('en-US');
+  const st = MINCE.stats || {}, fu = MINCE.future || {};
+  const done = st.starsAnalysed || 0, goal = st.starsTarget || 1000;
+  const queue = fu.observedToAnalyse || 0, approx = fu.approximate ? '~' : '';
+  const time = fu.awardedTime || [];
+  const prep = (MINCE.papers || []).filter(p => p.status === 'inprep');
+  const hours = time.reduce((s, t) => s + (+t.hours || 0), 0);
+
+  // key numbers
+  document.getElementById('n-done').textContent = fmt(done);
+  document.getElementById('n-queue').textContent = approx + fmt(queue);
+  document.getElementById('n-hours').textContent = fmt(hours);
+  document.getElementById('n-prep').textContent = prep.length;
+
+  // growth bar
+  const rest = Math.max(0, goal - done - queue);
+  const restShown = approx ? Math.round(rest / 50) * 50 : rest;     // ~498 → ~500 when numbers are approximate
+  const pct = n => (100 * n / Math.max(goal, done + queue)).toFixed(2) + '%';
+  const ongoing = time.filter(t => t.status === 'ongoing').map(t => t.facility).join(' & ');
+  document.getElementById('g-goal').textContent = `Goal: ~${fmt(goal)} stars`;
+  document.getElementById('g-max').textContent = fmt(goal);
+  document.getElementById('gbar').innerHTML = `
+    <div class="gseg done"   style="width:${pct(done)}"  title="Analysed: ${fmt(done)}">${fmt(done)}</div>
+    <div class="gseg queue"  style="width:${pct(queue)}" title="Observed, to be analysed: ${approx}${fmt(queue)}">${approx}${fmt(queue)}</div>
+    <div class="gseg taking" style="width:${pct(rest)}"  title="Still to be observed${ongoing ? ' (incl. ongoing ' + ongoing + ' runs)' : ''}"></div>`;
+  document.getElementById('glegend').innerHTML = `
+    <div class="gl"><span class="sw" style="background:var(--accent)"></span><div>
+      <div class="n" style="color:var(--accent)">${fmt(done)}</div>
+      <div class="t">stars analysed and published (MINCE I–IV)</div></div></div>
+    <div class="gl"><span class="sw" style="background:var(--accent2)"></span><div>
+      <div class="n" style="color:var(--accent2)">${approx}${fmt(queue)}</div>
+      <div class="t">stars already observed, analysis to come${ongoing ? ` (excluding the ongoing ${esc(ongoing)} runs)` : ''}</div></div></div>
+    <div class="gl"><span class="sw" style="background:rgba(245,200,66,.5)"></span><div>
+      <div class="n" style="color:var(--gold)">${approx}${fmt(restShown)}</div>
+      <div class="t">still to be observed to reach the goal${ongoing ? `, partly with the ongoing ${esc(ongoing)} programmes` : ''}</div></div></div>`;
+
+  // awarded time
+  const SL = { ongoing: 'Ongoing', awarded: 'Awarded', completed: 'Completed' };
+  document.getElementById('time-grid').innerHTML = time.map(t => `
+    <div class="tcard">
+      <div class="tcard-top">
+        <div class="thours">${fmt(t.hours)}<small>h</small></div>
+        <span class="status ${esc(t.status || 'awarded')}">${esc(SL[t.status] || t.status || 'Awarded')}</span>
+      </div>
+      <div>
+        <div class="tfac">${esc(t.facility)}${t.telescope ? ` <span style="font-weight:400;color:var(--muted);font-size:.85rem">· ${esc(t.telescope)}</span>` : ''}</div>
+        <div class="tinst">${esc(t.instrument)}</div>
+      </div>
+      <div class="tmeta">
+        <span>PI: <b>${esc(t.pi)}</b></span>
+        ${t.period ? `<span>Period: <b>${esc(t.period)}</b></span>` : ''}
+        ${t.url ? `<a href="${esc(t.url)}" target="_blank" rel="noopener" style="color:var(--accent)">Programme page ↗</a>` : ''}
+      </div>
+    </div>`).join('') || '<p style="color:var(--muted)">No awarded time listed yet.</p>';
+  if (time.length) document.getElementById('ttotal').innerHTML =
+    `Total: <b>${fmt(hours)} h</b> on ${time.length} programme${time.length > 1 ? 's' : ''}.`;
+
+  // papers in preparation
+  document.getElementById('prep-list').innerHTML = prep.map(p => `
+    <div class="pcard">
+      <div class="proman">MINCE<br>${esc(p.roman)}</div>
+      <div class="pbody">
+        <div class="ptitle">${esc(p.title)}</div>
+        <div class="pauth">${esc(p.authors)}</div>
+      </div>
+      <span class="status awarded">In preparation</span>
+    </div>`).join('') || '<p style="color:var(--muted)">No papers in preparation at the moment.</p>';
+})();
+</script>
+</body>
+</html>
